@@ -1,0 +1,49 @@
+.ErrorMessageStyle
+{
+    
+
+    
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    background-color: gray;
+    opacity: 1;
+    padding: 5%;
+    left: 50%;
+    bottom: 0%;
+    opacity: 0;
+    transform: translateX(-50%);
+};
+
+.fade-in-out{
+    animation: fadeInOut 5s ease-in-out;
+}
+
+.CloseErrorMessage
+{
+    position: fixed;
+    background-color: red;
+    width: 3%;
+    height: 3%;
+    color: orange;
+
+};
+
+.fade-in-out {
+    animation: fadeInOut 70s ease-in-out; /* Change 5s to the desired duration */
+}
+
+@keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    10% {
+        opacity: 1.00;
+    }
+    75% {
+        opacity: 1.00;
+    }
+    100% {
+      opacity: 0;
+    }
+  }

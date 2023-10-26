@@ -10,9 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      Global Header Storyaljkfdjflkasjfd;sfjlk;s
+      Golden Mappers!
       <footer>
-        JSX FOOTER
+        Golden Mappers Industries (copyright 2027)
       </footer>
 
       <style jsx>{`

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Layout from "../components/header"
 export default function Home() {
+  // TODO: Move <style> tag below into CSS file
   return (
     <Layout>
     <div className={styles.container}>

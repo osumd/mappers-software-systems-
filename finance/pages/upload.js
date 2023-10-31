@@ -7,6 +7,13 @@ function OnFileSubmit() {
     if (files.length > 0) {
         console.log('file uploaded')
     }
+    let main = document.querySelector('main')
+    while (main.hasChildNodes()) {
+        main.removeChild(main.firstChild)
+    }
+    let h2 = document.createElement('h2')
+    h2.textContent = "Financial Information Processing"
+    main.appendChild(h2)
 }
 
 export default function Home() {

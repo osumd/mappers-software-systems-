@@ -12,3 +12,7 @@ app.listen(port, () => {
     dbo.ConnectToDatabase();
     console.log("Connected To Finance Manager Database.");
 });
+
+app.post('/api', (req, res) => {
+    console.log('api request received')
+})

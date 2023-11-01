@@ -21,6 +21,7 @@ I'm sorry for some reason mongodb doesn't have any other way.
 $ cmd ./backed/
 $ npm install mongodb express cors dotenv
 ```
+1
 ### Start the server
 [backend/](./backend/)
 #### Head into this directory and run

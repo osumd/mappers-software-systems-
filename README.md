@@ -1,4 +1,12 @@
-# Logging into the data base.
+# Table of Contents
+- [Database Login](#Database-Login)
+- [Installing Mongodb](#Installing-Mongodb)
+- [Start the server](###Start-the-server)
+- [Start the client](###-Start-the-client)
+- [Creating a model](##Creating-a-model)
+- [Talking to the server inside of finance](#Talking-to-the-server-inside-of-finance)
+
+# Database Login
 ___________________________________
 | **Email**   | **Password**   |
 | -------------- | -------------- |
@@ -13,7 +21,7 @@ Security.
 Click t his and click add my current ip, then click add entry.
 I'm sorry for some reason mongodb doesn't have any other way.
 
-# Using mongodb
+# Installing Mongodb
 ### Install the database
 [backend/](./backend/)
 #### Head into this directory and run
@@ -21,16 +29,15 @@ I'm sorry for some reason mongodb doesn't have any other way.
 $ cmd ./backed/
 $ npm install mongodb express cors dotenv
 ```
-1
 ### Start the server
 [backend/](./backend/)
-#### Head into this directory and run
+Head into this directory and run
 ```bash
 $ node server.js
 ```
 ### Start the client
 [backend/](./finance/)
-#### Make sure to have run
+Make sure to have run
 ```bash
 $ npm install
 ```

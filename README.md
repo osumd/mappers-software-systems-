@@ -29,13 +29,13 @@ I'm sorry for some reason mongodb doesn't have any other way.
 $ cmd ./backed/
 $ npm install mongodb express cors dotenv
 ```
-### Start the server
+# Start the server
 [backend/](./backend/)
 Head into this directory and run
 ```bash
 $ node server.js
 ```
-### Start the client
+# Start the client
 [backend/](./finance/)
 Make sure to have run
 ```bash
@@ -45,7 +45,7 @@ $ npm install
 ```bash
 $ npm run dev
 ```
-## Creating a model
+# Creating a model
 ### Requirements.
 #### Insert a new javascript file into this folder
 [backend/models/](./backend/models/)

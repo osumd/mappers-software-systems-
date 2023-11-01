@@ -17,23 +17,26 @@ async function GetDatabase() {
     await client.connect();
     db = client.db;
     
-    const database = client.db('test'); // Replace <dbname> with the desired database name
-    const collection = database.collection('collection');
-    await collection.insertOne({ key: 'value2' });
-    
+    // const database = client.db('test'); // Replace <dbname> with the desired database name
+    // const collection = database.collection('collection');
+    // await collection.insertOne({ key: 'value2' });
 }
 
 module.exports = {
     
+    Random: function()
+    {
+      
+    },
     ConnectToDatabase: async function ConnectToDatabase()
     {
         await GetDatabase();
         return;
     },
 
-    GetDB : function(databasename)
+    getDB : function(databasename)
     {
         return client.db(databasename);
-    }
+    },
 
-}
+};

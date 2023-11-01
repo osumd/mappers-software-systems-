@@ -1,21 +1,28 @@
 
-import ErrorStatus from "./ErrorMessage"
+import React,{createContext, useContext, useState, useEffect} from 'react';
+import ErrorComponent from "./ErrorMessage";
 
 
-
-
-export default function Layout({children})
+function Layout({children})
 {
 
     
-    return (
-    <div>
-        {ErrorStatus.render()}
+    
+
+
+    
+    return(
         <div>
             {children}
         </div>
-    </div>);
+    );
 }
+
+export {Layout};
+
+
+
+
 
 
 

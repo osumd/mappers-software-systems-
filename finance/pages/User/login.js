@@ -1,15 +1,8 @@
-import React, { useContext, useState } from "react";
-import VerifyUser from "./verification";
+import React, { useState } from "react";
 import {Layout} from "../../components/header"
-import {Error_Data} from "../../root/GlobalComponents/ErrorContext"
-
-var SignUpErrorMessage = "";
+import VerifyUser from "./verification"
 
 export default function Create() {
-
-    const {error, raiseError} = useContext(Error_Data);
-    
-
     const [form, setForm] = useState({
         username: "",
         password: "",
@@ -21,54 +14,58 @@ export default function Create() {
         return { ...prev, ...value };
         });
     }
-
-
         // This function will handle the submission.
-        async function onSubmit(e) {
+    async function onLogin(e) {
 
-        SignUpErrorMessage = "";
         // Set up timeout functionality.
         e.preventDefault();
-        // When a post request is sent to the create url, we'll add a new record to the database.
-        const newUser = { ...form };
+        const user = { ...form };
+        const uservalidation = VerifyUser(user);
+        if(uservalidation == false){return;}
 
-        const response = await fetch("http://localhost:5000/users/add", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-        })
-        .catch(error => {
-        window.alert(error);
-        return;
-        });
+        try{
+          const response = await fetch("http://localhost:5000/user/login", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+          })
+            .catch(error => {
+            window.alert(error);
+            return;
+          });
 
-        console.log(await response.json());
-
-        return;
-
-        const UserVerificaiton = VerifyUser(newUser);
-        if(UserVerificaiton == false)
-        {  
-          SignUpErrorMessage = "Login credentials did not match criterium.";
-          setForm({ username: "", password: ""});
-          return;
+          if(response.ok)
+          {
+            const data = await response.json();
+            console.log(data);
+            if(data != null)
+            {
+              sessionStorage.setItem('usertoken', data._usertoken);
+            }else
+            {
+              
+            }
+            
+          }else
+          {
+            console.error("Error:", response.status);
+            sessionStorage.setItem('usertoken', null);
+          }
+        } catch (error)
+        {
+            console.error("Network error:", error.message);
         }
-
-        
-        
-
-        setForm({ username: "", password: ""});
+        return;
     }
 
     return (
     
     <Layout>
         <div>
-          <h3>Sign Up</h3>
-          <h1>{SignUpErrorMessage}</h1>
-          <form onSubmit={onSubmit}>
+          <h3>Sign In</h3>
+          <form onSubmit={onLogin}>
             <div className="form-group">
               <label htmlFor="password">Username</label>
               <input

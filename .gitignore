@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# don't include the downloaded packages in the github, takes too much space
+**/node_modules
+**/package-lock.json
+
 # dependencies
 /finance/node_modules
 /finance/.pnp

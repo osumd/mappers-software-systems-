@@ -2,12 +2,12 @@
 
 <h1>Travel into the backend folder and run this command</h1>
 
-<p stlye="padding: 5%;">npm install mongodb express cors dotenv</p>
+<p style="padding: 5%;">npm install</p>
 
 
 <h1>Travel into the finance folder and run</h1>
 
-<p stlye="padding: 5%;">npm install.</p>
+<p style="padding: 5%;">npm install.</p>
 
 </div>
 

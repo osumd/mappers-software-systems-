@@ -7,7 +7,7 @@
 
 <h1>Travel into the finance folder and run</h1>
 
-<p style="padding: 5%;">npm install.</p>
+<p style="padding: 5%;">npm install</p>
 
 </div>
 
@@ -17,11 +17,11 @@
 
 <h1>To initiate server travel into the backend, then run.</h1>
 
-<p stlye="padding: 5%;">node server.js</p>
+<p style="padding: 5%;">node server.js</p>
 
 
 <h1>To start the app navigate to finance and type.</h1>
 
-<p stlye="padding: 5%;">npm run dev</p>
+<p style="padding: 5%;">npm run dev</p>
 
 </div>

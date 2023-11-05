@@ -1,9 +1,12 @@
 const express = require("express");
-const dbo = require("./dbo");
-const app = express();
 const formidable = require("formidable")
 const cors = require("cors");
+
+const dbo = require("./dbo");
+
 const port = process.env.PORT || 5000;
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());

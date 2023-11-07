@@ -7,14 +7,39 @@ export default function Home() {
     <Layout>
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>RocketMoney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      Golden Mappers!
+
+      <div className={styles.nav}>
+
+        <a href=''>Account</a>
+        <a href=''>Componenent</a>
+
+        <div className={styles.navcenter}>
+          <a href=''>Dashboard</a>
+        </div>
+        <div className={styles.navright}>
+          <a href=''>Search</a>
+          <a href=''>Componenent</a>
+        </div>
+      </div>
+
+
+      <div className={styles.body}>
+
+      </div>
+
       <footer>
         Golden Mappers Industries (copyright 2027)
       </footer>
+
+
+
+
+
+
 
       <style jsx>{`
         main {

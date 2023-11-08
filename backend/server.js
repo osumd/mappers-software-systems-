@@ -27,7 +27,13 @@ app.post('/api/upload', (req, res, next) => {
             next(err);
             return;
         }
-        console.log(files)
-        res.status(200).json({ fields, files });
+        if (files[0] === undefined) {
+            ParseManualTransaction(fields)
+        }
+        res.status(200);
     });
 })
+
+function ParseManualTransaction(fields) {
+    console.log(fields) // example: { title: [ 'title' ], money: [ 'money' ], category: [ '' ] }
+}

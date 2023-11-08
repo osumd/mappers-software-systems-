@@ -1,8 +1,73 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Layout from "../components/header"
+
+
+function xyz(props)
+{
+
+}
+
 export default function Home() {
+
+
+  function myHomeFunction(choice){
+
+    return (
+      <Layout>
+        <div className={styles[`comp${choice}`]}>
+          <h3>Component</h3>
+        </div>
+      </Layout>
+    )
+
+    // switch (choice) {
+    //   case 1:
+    //     return (
+    //       <Layout>
+    //         <div className={styles.comp1}>
+    //           <h3>Component 1</h3>
+    //         </div>
+    //       </Layout>
+    //     )
+    //   case 2:
+    //     return (
+    //       <Layout>
+    //         <div className={styles.comp2}>
+    //           <h3>Component 2</h3>
+    //         </div>
+    //       </Layout>
+    //     )
+    //   case 3:
+    //     return (
+    //       <Layout>
+    //         <div className={styles.comp3}>
+    //           <h3>Component 3</h3>
+    //         </div>
+    //       </Layout>
+    //     )
+    //   case 4:
+    //     return ()
+    //   defualt:
+    //     return;
+    // }
+
+
+    return (
+      <Layout>
+        <div>
+          balls
+        </div>
+      </Layout>
+    )
+  }
+
+
+
+  var homeComponents = [myHomeFunction, xyz];
+
   // TODO: Move <style> tag below into CSS file
+  // TODO: when different pages have been created, update the navigation links
   return (
     <Layout>
     <div className={styles.container}>
@@ -10,7 +75,7 @@ export default function Home() {
         <title>RocketMoney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
 
       <div className={styles.nav}>
 
@@ -29,87 +94,55 @@ export default function Home() {
 
       <div className={styles.body}>
 
+        <div className={styles.topHalf}>
+          <div>
+            {myHomeFunction(1)}
+          </div>
+  
+          <div>
+            {myHomeFunction(2)}
+          </div>
+        </div>
+
+        <div className={styles.bottomHalf}>
+          <div>
+            {myHomeFunction(3)}
+          </div>
+
+          <div>
+            {myHomeFunction(4)}
+          </div>
+        </div>
+          
+          {myHomeFunction()}
+          {/* <xyz props={}/>
+          {xyz()} */}
       </div>
 
+
+      <div className={styles.foot}>
       <footer>
-        Golden Mappers Industries (copyright 2027)
+        Golden Mapper Industries (copyright 2027)
       </footer>
-
-
-
-
-
-
+      </div>
+      
 
       <style jsx>{`
         main {
           padding: 5rem 0;
+          margin: 0.5%;
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
         }
-        footer {
-          position: absolute;
-          width: 100%;
-          bottom: 0%;
-          height: 50px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
-        }
       `}</style>
 
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+
     </div>
     </Layout>
   );
 }
+
+

@@ -25,3 +25,8 @@
 <p style="padding: 5%;">npm run dev</p>
 
 </div>
+
+## /upload
+This page allows uploading documents and manually typing transactions
+It uses the javascript `fetch` api as well as standard html forms as a backup.
+It performs a POST request to the specified server endpoint with form data, which is then parsed by an npm package called `formidable`.

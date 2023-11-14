@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import {Layout} from "../../components/header"
-import VerifyUser from "./verification"
+import {Layout} from "../../components/header";
+import VerifyUser from "./verification";
+import { useRouter } from 'next/router';
 
 export default function Create() {
+
+    const router = useRouter();
+
     const [form, setForm] = useState({
         username: "",
         password: "",
@@ -14,7 +18,6 @@ export default function Create() {
         return { ...prev, ...value };
         });
     }
-        // This function will handle the submission.
     async function onLogin(e) {
 
         // Set up timeout functionality.
@@ -42,16 +45,28 @@ export default function Create() {
             console.log(data);
             if(data != null)
             {
+
               sessionStorage.setItem('usertoken', data._usertoken);
+              localStorage.setItem('usertoken', data._usertoken);
+              if(data._usertoken != "")
+              {
+                console.log(data);
+                router.push('/');
+              }
+              setForm({ username: "", password: ""});
+
             }else
             {
-              
+              localStorage.setItem('usertoken', "");
+              sessionStorage.setItem('usertoken', "");
+              setForm({ username: "", password: ""});
             }
             
           }else
           {
             console.error("Error:", response.status);
-            sessionStorage.setItem('usertoken', null);
+            localStorage.setItem('usertoken', "");
+            sessionStorage.setItem('usertoken', "");
           }
         } catch (error)
         {

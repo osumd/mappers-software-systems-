@@ -4,41 +4,36 @@ import { useRouter } from 'next/router';
  export default function Edit() 
  {
     const router = useRouter();
-    const { id } = router.query;
 
-  
     const [form, setForm] = useState({
         username: "",
         password: "",
     });
 
+    const visibleUserData = {
+      username: ""
+    };
+
     useEffect(() => {
-        async function fetchData() 
+      async function VerifyUserID() {
+        const userLoggedIn = await UserLoggedIn();
+        msg("Searching for user: " + userLoggedIn);
+        if(userLoggedIn.LoginStatus == false)
         {
-            const response = await fetch(`http://localhost:5000/user/${id}`);
+          msg("User account not logged in, please sign in.");
+          router.push('/user/signin');
+        }else
+        {
+          msg("User successfully logged in with usable user_id.");
+        }
+      }
+  
+      VerifyUserID(); // Call the function to check login status when the component mounts
 
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
-                return;
-            }
-            const user = await response.json();
-            console.log(user);
-            if (!user) {
-              console.log(`User with id ${id} not found`);
-                return;
-            }
-            setForm(user);
-        }
-        if(id)
-        {
-          fetchData();
-        }
         
-        return;
-    }, [id, router]);
+      return;
+    }, []);
 
-
-  // These methods will update the state properties.
     function updateForm(value) {
         return setForm((prev) => {
             return { ...prev, ...value };
@@ -46,43 +41,39 @@ import { useRouter } from 'next/router';
     }
     
     async function onSubmit(e) {
-
         e.preventDefault();
 
         const user = {
             username: form.username,
         };
-        console.log(user);
+        
     }
-  if(form.username == '')
-  {
-    return null;
-  }
-  // This following section will display the form that takes input from the user to update the data.
- return (
-   <div>
-     <h3>Update User</h3>
-     <form onSubmit={onSubmit}>
-       <div className="form-group">
-         <label htmlFor="name">Username: </label>
-         <input
-           type="text"
-           className="form-control"
-           id="name"
-           value={form.username}
-           onChange={(e) => updateForm({ username: e.target.value })}
-         />
-       </div>
-       <br />
-       <div className="form-group">
-         <input
-           type="submit"
-           value="Update User"
-           className="btn btn-primary"
-         />
-       </div>
-     </form>
-   </div>
+
+    // This following section will display the form that takes input from the user to update the data.
+    return(
+    <div>
+      <h3>Welcome Back</h3>
+      <form onSubmit={onSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Username: </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            value={form.username}
+            onChange={(e) => updateForm({ username: e.target.value })}
+          />
+        </div>
+        <br />
+        <div className="form-group">
+          <input
+            type="submit"
+            value="Update User"
+            className="btn btn-primary"
+          />
+        </div>
+      </form>
+    </div>
  );
 }
 

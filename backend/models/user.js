@@ -45,71 +45,201 @@ recordRoutes.route("/user/:id").get(async function (req, response) {
   response.json(found);
 });
  
-// This section will help you create a new record.
-// recordRoutes.route("/users/add").post(function (req, response) {
-//   let db_connect = dbo.getDB("HighPriv");
-//   let myobj = {
-//     username: req.body.username,
-//     password: req.body.password,
-//   };
-//   db_connect.collection("users").insertOne(myobj, function (err, res) {
-//     console.log("thread?");
-//     if (err) throw err;
-//     response.json(res);
-//   });
-// });
 
-async function AddUser(db_connect, myobj, response)
-{
-  const collection = db_connect.collection("users");
-  const rr = await collection.insertOne(myobj);
 
-  response.json("good");
-}
+recordRoutes.post("/user/exist", async function(req, response){
 
-recordRoutes.post("/users/add",function (req, response) {
-  
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
   let db_connect = dbo.getDB("HighPriv");
-  let myobj = {
-    username: req.body.username,
-    password: req.body.password,
+  let user = {
+    username: req.body.username
   };
 
-  AddUser(db_connect,myobj, response);
-  
-  return;
-  
+  msg("Username entered to server: " + user.username);
 
+  try{
+
+  
+  let collection = db_connect.collection("users");
+  let verification = await collection.findOne(user);
+  msg("Response was made from database: " + verification );
+  if(verification != null)
+  {
+    
+    const usertoken = jwt.sign(user, secretKey, { expiresIn: '1h' });
+    response.json(true);
+
+  }else
+  {
+    response.json(false);
+  }
+  }catch(error)
+  {
+    msg("Error checking username:" + error.message);
+    response.json(false);
+  }
 });
 
- 
-recordRoutes.post("/user/login",async function(req,response){
+
+recordRoutes.post("/user/userid", async function(req, response){
+
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
+  msg("\n\n\n\n Searching valid user_id");
+
+  let db_connect = dbo.getDB("HighPriv");
+  let user = {
+    _usertoken: req.body._usertoken
+  };
+
+  msg("usertoken searching " + _usertoken);
+
+  try{
+    let collection = db_connect.collection("users");
+    const user_full = jwt.decode(user);
+    let verification = await collection.findOne(user_full);
+
+    msg("Response was made from database: " + verification );
+    if(verification != null)
+    {
+      const user_id = verification._id;
+      response.json({user_id: user_id, sucessful: true});
+
+    }else
+    {
+      response.json({user_id: "", sucessful: false})
+    }
+  }catch(error)
+  {
+    msg("Error retrieving user_id:" + error.message);
+    response.json({user_id: "", sucessful: false})
+  }
+});
+
+recordRoutes.post("/users/add", async function (req, response) {
+
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
   let db_connect = dbo.getDB("HighPriv");
   let user = {
     username: req.body.username,
     password: req.body.password
   };
 
-  let collection = db_connect.collection("users");
-  let verification = await collection.findOne(user);
-  console.log(verification);
-  if(verification != null)
-  {
-    const usertoken = jwt.sign(user, secretKey, { expiresIn: '1h' });
-    response.json({_usertoken: usertoken});
+  try{
 
-  }else
+    let collection = db_connect.collection("users");
+    let verification = await collection.insertOne(user);
+
+    if(verification != null)
+    {
+      
+      const usertoken = jwt.sign(user, secretKey, { expiresIn: '1h' });
+      msg("Succsessfully inserted user: " + verification)
+      response.json({_usertoken: usertoken});
+
+    }else
+    {
+      msg('Token verification failed');
+      response.json({_usertoken: ""});
+    }
+  
+ }catch(error)
+ {
+    msg('Token verification failed' + error.message);
+    response.json({_usertoken: ""});
+ }
+  
+
+});
+
+
+recordRoutes.post("/user/login",async function(req,response){
+
+  var DebugMode = true;
+
+  function msg(message)
   {
-    response.json({verification});
+      if(DebugMode)
+      {
+          console.log(message);
+      }
   }
+
+  let db_connect = dbo.getDB("HighPriv");
+
+  let user = {
+    username: req.body.username,
+    password: req.body.password
+  };
+
+  try
+  {
+    let collection = db_connect.collection("users");
+    let verification = await collection.findOne(user);
+
+    if(verification != null)
+    {
+      const usertoken = jwt.sign(user, secretKey, { expiresIn: '1h' });
+      msg("Succesfully validated user credentials: " + verification);
+      response.json({_usertoken: usertoken});
+
+    }else
+    {
+      msg('Token verification failed');
+      response.json({_usertoken: ""});
+    }
+  }catch(error)
+  {
+    msg('Token verification failed:', error.message);
+    response.json({_usertoken: ""});
+  }
+  
 
 });
 
 recordRoutes.post("/user/usertoken", async function(req,response){
+
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
   let db_connect = dbo.getDB("HighPriv");
   if(req.body._usertoken == null)
   {
-    response.json(null);
+    response.json({validation: false});
+
   }else
   {
     try{
@@ -121,19 +251,71 @@ recordRoutes.post("/user/usertoken", async function(req,response){
       };
       let collection = db_connect.collection("users");
       let verification = await collection.findOne(user);
-      response.json(true);
+      if(verification != null)
+      {
+        response.json({validation: true});
+        msg("Succesfully validated token: " + verification);
 
-    } catch(error)
+      }else
+      {
+        msg('Token verification failed');
+        response.json({validation: false});
+      }
+      
+    }catch(error)
     {
-      console.error('Token verification failed:', error.message);
-      response.json(false);
+      msg('Token verification failed:', error.message);
+      response.json({validation: false});
     }
-  }
-
-  
+  }  
 });
 
+//returns as much information about user as possible given user_token
+recordRoutes.post("/user/visible", async function(req,response){
 
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
+  let db_connect = dbo.getDB("HighPriv");
+  if(req.body._usertoken == null)
+  {
+    response.json({visible: "", validation: false});
+
+  }else
+  {
+    try{
+      const decoded = jwt.decode(req.body._usertoken, secretKey);
+
+      const visibleuser = {
+        username: decoded.username,
+      };
+      let collection = db_connect.collection("users");
+
+      if(decoded != null)
+      {
+        response.json({visible: visibleuser, validation: true});
+        msg("Succesfully validated token: " + verification);
+
+      }else
+      {
+        msg('Token verification failed.');
+        response.json({visible: "", validation: false});
+      }
+      
+    }catch(error)
+    {
+      msg('Token verification failed:', error.message);
+      response.json({visible: "", validation: false});
+    }
+  }  
+});
 
 
 // This section will help you update a record by id.

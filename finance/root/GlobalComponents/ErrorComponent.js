@@ -1,37 +1,35 @@
 
 import React, { useState, useEffect, Component} from "react";
-import styles from './ErrorMessage.module.css';
+import styles from './ErrorComponent.module.css';
 
+import CurrentSystemErrors from "./ErrorProccessing"
 
-
-
-function ErrorComponent(Error)
+function errorComponent({ Error })
 {
-
-  const [open, setOpen] = useState(true);
 
   function closeBox()
   {
-    setOpen(false);
+
   }
 
-  if(Error == "" || !open)
+  if(Error == "")
   {
       return null;
   }
+  
   return (
             <div className={styles.ErrorMessageStyle}>
               {Error}
-              <div className={styles.CloseErrorMessage} onClick = {closeBox}></div>
+              <div className={styles.CloseErrorMessage} onClick={closeBox}></div>
             </div>
         );
 }
 
 
-export default ErrorComponent;
+export default errorComponent;
 
 
-// class ErrorComponent extends Component
+// class ErrorWindow extends Component
 // {
 
 //   constructor(props)
@@ -40,8 +38,9 @@ export default ErrorComponent;
 
 //     this.state = 
 //     {
-//         error: "",
-//         open: false,
+//         WindowOpen: false,
+//         AmountOfErrors: 0,
+//         CurrentError: 0,
 //     };
 //   }
 

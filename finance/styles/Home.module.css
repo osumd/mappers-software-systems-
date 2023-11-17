@@ -61,6 +61,22 @@
   border-radius: 10px;
 }
 
+.componentTray
+{
+  display: grid;
+  grid-template-columns: [first] 20% [line2] 20% [line3] 20% [col4-start] 20% [five];
+  grid-template-rows: [first] 20% [line2] 20% [line3] 20% [col4-start] 20% [five];
+
+}
+
+.randomTray
+{
+  width: 50%;
+  grid-template-columns: auto auto auto auto;
+  padding-left: 20%;
+  padding-right:20%;
+  display:grid;
+}
 .nav a:hover {
   background-color: black;
   color: white;

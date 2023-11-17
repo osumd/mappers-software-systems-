@@ -1,6 +1,15 @@
+// @ts-check
+// @useClient
+
+
 import React, { useState } from 'react';
 
-export default function BudgetForm( {onAddBudgetItem} ){
+export default function BudgetForm(){
+    function onAddBudgetItem()
+    {
+
+    }
+
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
 
@@ -10,7 +19,7 @@ export default function BudgetForm( {onAddBudgetItem} ){
 
         //validate input
         if(category && amount){
-            onAddBudgetItem({category, amount: Number(amount)});
+            //onAddBudgetItem({category, amount: Number(amount)});
             setCategory('');
             setAmount('');
         }

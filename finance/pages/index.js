@@ -5,7 +5,9 @@ import {Layout} from "../components/header"
 import Link from 'next/link';
 import { UserLoggedIn } from './user/verification';
 import React, { useState, useEffect } from "react";
+import MyForm from './exampleForm';
 
+import * as ComponentList from './component/componentList';
 
 function UserLoggedInHome()
 {
@@ -27,24 +29,33 @@ function UserLoggedOutHome()
       
 
       <div className={styles.nav}>
-        <Link href="/user/signup">Account</Link>
+        <Link href="/User/signup">Account</Link>
         <Link href="/user/component">Component</Link>
 
         <div className={styles.navcenter}>
           <Link href="/">Dashboard</Link>
         </div>
         <div className={styles.navright}>
-          <Link href="/search">Search</Link>
-          <Link href="/user/component">Component</Link>
+          <Link href="/search/">Search</Link>
+          <Link href="/component/0">Component</Link>
         </div>
       </div>
 
 
+
       <div className={styles.body}>
+
+
+        
+        <div className={styles.randomTray}>
+            {ComponentList.Components[0]}
+            {ComponentList.Components[1]}
+            {ComponentList.Components[2]}
+        </div>
 
         <div className={styles.topHalf}>
           <div>
-            {}
+            
           </div>
   
           <div>
@@ -99,7 +110,7 @@ export default function Home() {
 
 
 
-  const [loginBasedHome, setLoginBasedHome] = useState(null); // Initialize loginBasedHome with null
+  const [loginBasedHome, setLoginBasedHome] = useState(UserLoggedOutHome()); // Initialize loginBasedHome with null
 
   useEffect(() => {
     async function checkLoginStatus() {
@@ -109,7 +120,7 @@ export default function Home() {
       setLoginBasedHome(componentToRender); // Set the component based on user's login status
     }
 
-    checkLoginStatus(); // Call the function to check login status when the component mounts
+    //checkLoginStatus(); // Call the function to check login status when the component mounts
   }, []); // Empty dependency array ensures the effect runs once after the initial render
 
   if (loginBasedHome === null) {

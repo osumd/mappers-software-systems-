@@ -21,9 +21,6 @@ Security.
 Click t his and click add my current ip, then click add entry.
 I'm sorry for some reason mongodb doesn't have any other way.
 
-<<<<<<< HEAD
-<p style="padding: 5%;">npm install</p>
-=======
 # Installing Mongodb
 ### Install the database
 [backend/](./backend/)
@@ -89,7 +86,6 @@ recordRoutes.post("/your/path", async function (req, response) {
   const db_collection = db_connect.collection("users"); 
   //I will now list all functions availabe here.
   const db_request =  await db_collection.insertOne(YourObjectInJson);
->>>>>>> origin/login
 
 
 ```
@@ -101,7 +97,6 @@ ____________________________________________________________________
 |await collection.updateOne(YourObjectInJson,ObjectInJsonWithNewValues); | ObjectInJsonWithNewValue is exactly the same but instead add an outer lay $set{% old inner json code}, $unset{ % old inner json code %} or $replaceWith{ % old inner json code % }  | { "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 } | updateOne | |
 | await deleteOne(myquery) | Deletes the item with matching json arguments | { "acknowledged" : true, "deletedCount" : 1 } | |
 
-<<<<<<< HEAD
 <p style="padding: 5%;">npm install</p>
 
 </div>
@@ -113,12 +108,6 @@ ____________________________________________________________________
 <h1>To initiate server travel into the backend, then run.</h1>
 
 <p style="padding: 5%;">node server.js</p>
-=======
-``` javascript
-    res.json({Anything you want to send back.});
-});
-```
->>>>>>> origin/login
 
 
 # Talking to the server inside of finance
@@ -126,16 +115,6 @@ ____________________________________________________________________
 ``` javascript
 import React, { useContext, useState } from "react";
 
-<<<<<<< HEAD
-<p style="padding: 5%;">npm run dev</p>
-
-</div>
-
-## /upload
-This page allows uploading documents and manually typing transactions
-It uses the javascript `fetch` api as well as standard html forms as a backup.
-It performs a POST request to the specified server endpoint with form data, which is then parsed by an npm package called `formidable`.
-=======
 export default function Page() {
 
     // set form, just takes whatever json format you have.
@@ -222,4 +201,3 @@ export default function Page() {
 I have the folder under pages called user which allows to sign up, sign in, I've yet to include log out and edit user value.
 
 I have yet to make a collection named transcations which maps the user id to a collecition that they own.
->>>>>>> origin/login

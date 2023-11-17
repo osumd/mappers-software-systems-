@@ -5,12 +5,6 @@ import ErrorComponent from "./ErrorMessage";
 
 function Layout({children})
 {
-
-    
-    
-
-
-    
     return(
         <div>
             {children}

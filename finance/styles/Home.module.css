@@ -1,21 +1,117 @@
-.main {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+
+.comp1 {
+  background-color: #0070f3;
+  text-align: center;
 }
 
-.upload_flex_container {
-  display: flex;
+.comp2 {
+  background-color: red;
+  text-align: center;
 }
 
-.upload_flex_child {
-  flex: 1;
-  border: 2px solid grey;
+.comp3 {
+  background-color: green;
+  text-align: center;
+}
+
+.comp4 {
+  background-color: yellow;
+  text-align: center;
+}
+
+
+.foot {
+  padding: 0.5%;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.5%;
+  margin-top: 0%;
+  text-align: center;
+
+  border: 1px solid #eaeaea;
   border-radius: 10px;
-  padding: 5px;
-  margin: 0.5%;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
+
+
+
+.nav {
+  padding: 0.5%;
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  margin-top: 0.5% ;
+  margin-bottom: 0%;
+}
+
+.nav a {
+  float: left;
+  text-align: center;
+  text-decoration: none;
+  padding: 1.5%;
+  color: black;
+  border-radius: 10px;
+}
+
+.nav a:hover {
+  background-color: black;
+  color: white;
+}
+
+.navcenter a{
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.navright a {
+  float: right;
+}
+
+@media screen and (max-width: 600px) {
+  .nav a, .navright {
+    float: none;
+    display: block;
+  }
+
+  .navcenter a {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+}
+
+
+.body {
+  padding: 0.5%;
+  overflow: hidden;
+
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  margin-bottom: 0.5%;
+  margin-top: 0.5%;
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: auto;
+}
+
 
 .container {
   min-height: 100vh;
@@ -121,4 +217,13 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.budget_container{
+
+
+}
+
+.budget_child{
+  
 }

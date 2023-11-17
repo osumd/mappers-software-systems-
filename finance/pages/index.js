@@ -1,73 +1,22 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import Layout from "../components/header"
+import {Layout} from "../components/header"
+
+import Link from 'next/link';
+import { UserLoggedIn } from './user/verification';
+import React, { useState, useEffect } from "react";
 
 
-function xyz(props)
+function UserLoggedInHome()
 {
-
+  return (
+    <>
+        <Link href="/user/logout">Log Out</Link><br></br>
+    </>
+  );
 }
-
-export default function Home() {
-
-
-  function myHomeFunction(choice){
-
-    return (
-      <Layout>
-        <div className={styles[`comp${choice}`]}>
-          <h3>Component</h3>
-        </div>
-      </Layout>
-    )
-
-    // switch (choice) {
-    //   case 1:
-    //     return (
-    //       <Layout>
-    //         <div className={styles.comp1}>
-    //           <h3>Component 1</h3>
-    //         </div>
-    //       </Layout>
-    //     )
-    //   case 2:
-    //     return (
-    //       <Layout>
-    //         <div className={styles.comp2}>
-    //           <h3>Component 2</h3>
-    //         </div>
-    //       </Layout>
-    //     )
-    //   case 3:
-    //     return (
-    //       <Layout>
-    //         <div className={styles.comp3}>
-    //           <h3>Component 3</h3>
-    //         </div>
-    //       </Layout>
-    //     )
-    //   case 4:
-    //     return ()
-    //   defualt:
-    //     return;
-    // }
-
-
-    return (
-      <Layout>
-        <div>
-          balls
-        </div>
-      </Layout>
-    )
-  }
-
-
-
-  var homeComponents = [myHomeFunction, xyz];
-
-  // TODO: Move <style> tag below into CSS file
-  // TODO: when different pages have been created, update the navigation links
+function UserLoggedOutHome()
+{
   return (
     <Layout>
     <div className={styles.container}>
@@ -78,16 +27,15 @@ export default function Home() {
       
 
       <div className={styles.nav}>
-
-        <a href=''>Account</a>
-        <a href=''>Componenent</a>
+        <Link href="/user/signup">Account</Link>
+        <Link href="/user/component">Component</Link>
 
         <div className={styles.navcenter}>
-          <a href=''>Dashboard</a>
+          <Link href="/">Dashboard</Link>
         </div>
         <div className={styles.navright}>
-          <a href=''>Search</a>
-          <a href=''>Componenent</a>
+          <Link href="/search">Search</Link>
+          <Link href="/user/component">Component</Link>
         </div>
       </div>
 
@@ -96,25 +44,25 @@ export default function Home() {
 
         <div className={styles.topHalf}>
           <div>
-            {myHomeFunction(1)}
+            {}
           </div>
   
           <div>
-            {myHomeFunction(2)}
+            {}
           </div>
         </div>
 
         <div className={styles.bottomHalf}>
           <div>
-            {myHomeFunction(3)}
+            {}
           </div>
 
           <div>
-            {myHomeFunction(4)}
+          
           </div>
         </div>
           
-          {myHomeFunction()}
+          {}
           {/* <xyz props={}/>
           {xyz()} */}
       </div>
@@ -144,5 +92,44 @@ export default function Home() {
     </Layout>
   );
 }
+
+
+
+export default function Home() {
+
+
+
+  const [loginBasedHome, setLoginBasedHome] = useState(null); // Initialize loginBasedHome with null
+
+  useEffect(() => {
+    async function checkLoginStatus() {
+      const userLoggedIn = await UserLoggedIn();
+      console.log(userLoggedIn);
+      const componentToRender = userLoggedIn.LoginStatus ? UserLoggedInHome() : UserLoggedOutHome();
+      setLoginBasedHome(componentToRender); // Set the component based on user's login status
+    }
+
+    checkLoginStatus(); // Call the function to check login status when the component mounts
+  }, []); // Empty dependency array ensures the effect runs once after the initial render
+
+  if (loginBasedHome === null) {
+    // Render loading state if loginBasedHome is still null (while waiting for the API response)
+    return UserLoggedOutHome();
+  }
+
+  return (
+    <>
+    <Head>
+      <title>Golden Finance</title>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+        <h1>Golden Finance</h1>
+        {loginBasedHome}
+    </>
+  );
+}
+
+
+
 
 

@@ -1,6 +1,9 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Layout from "../components/header"
+import Link from 'next/link'
+import BudgetPage from './budgeting/page';
+
 export default function Home() {
   // TODO: Move <style> tag below into CSS file
   return (
@@ -10,7 +13,7 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Link href="/BudgetPage.js">clickme</Link>
       Golden Mappers!
       <footer>
         Golden Mappers Industries (copyright 2027)

@@ -3,21 +3,13 @@ import styles from '../styles/Home.module.css';
 import {Layout} from "../components/header"
 
 import Link from 'next/link';
-import { UserLoggedIn } from './user/verification';
+import { UserLoggedIn } from './User/verification';
 import React, { useState, useEffect } from "react";
 import MyForm from './exampleForm';
 
 import * as ComponentList from './component/componentList';
 
 function UserLoggedInHome()
-{
-  return (
-    <>
-        <Link href="/user/logout">Log Out</Link><br></br>
-    </>
-  );
-}
-function UserLoggedOutHome()
 {
   return (
     <Layout>
@@ -102,25 +94,31 @@ function UserLoggedOutHome()
     </div>
     </Layout>
   );
+
+
 }
 
-
+function UserLoggedOutHome()
+{
+  return (
+    <>
+        <Link href="/User/login">Log In</Link><br></br>
+    </>
+  );
+}
 
 export default function Home() {
 
-
-
-  const [loginBasedHome, setLoginBasedHome] = useState(UserLoggedOutHome()); // Initialize loginBasedHome with null
+  const [loginBasedHome, setLoginBasedHome] = useState(null); // Initialize loginBasedHome with null
 
   useEffect(() => {
     async function checkLoginStatus() {
       const userLoggedIn = await UserLoggedIn();
-      console.log(userLoggedIn);
       const componentToRender = userLoggedIn.LoginStatus ? UserLoggedInHome() : UserLoggedOutHome();
       setLoginBasedHome(componentToRender); // Set the component based on user's login status
     }
 
-    //checkLoginStatus(); // Call the function to check login status when the component mounts
+    checkLoginStatus(); // Call the function to check login status when the component mounts
   }, []); // Empty dependency array ensures the effect runs once after the initial render
 
   if (loginBasedHome === null) {

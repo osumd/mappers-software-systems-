@@ -1,36 +1,51 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
 
-import styles from '../styles/Home.module.css'
+import styles from '../../styles/Home.module.css'
+import {Router} from 'next';
+import { UserLoggedIn } from '../User/verification';
+import { useRouter } from 'next/router';
 
-<<<<<<< HEAD
-// temporary(?) server url while in development
-const server_url = "http://localhost:5000"
-
-=======
->>>>>>> origin/login
 export default function Home() {
+
+    var router = useRouter();
+    var Debug = true;
+    var userLoggedIn ={
+        LoginStatus: false,
+        user_id: 0,
+    };
+
+    function msg(message)
+    {
+        if(Debug == true)
+        {
+            console.log(message);
+        }
+    }
+    var server_url = "";
+
     async function handleFileSubmit(event) {
         // prevents the form from accessing '/api' unless fetch fails
         event.preventDefault()
 
+        
         const form = event.currentTarget
-        const url = new URL(form.action);
+        const url = new URL("http://localhost:5000/api/upload");
         const formData = new FormData(form);
+        formData.append('user_id', userLoggedIn.user_id);
+        msg(formData);
+
         const fetchOptions = {
             mode: 'cors',
-            method: form.method,
-            body: formData,
+            method: 'post',
+            body: formData
         };
 
-<<<<<<< HEAD
-	    // check and make sure the form contains a title and file before posting to the server
-=======
->>>>>>> origin/login
         if (formData.get('title') != '' && formData.get('files').name != '') {
+
             try {
                 const response = await fetch(url, fetchOptions)
-
+        
                 const result = response.status
                 
                 if (result == 200) {
@@ -41,27 +56,37 @@ export default function Home() {
                 }
 
             } catch (e) { console.log(e) }
+
         } else {
             alert('File must have title')
         }
+
+        //form.reset();
     }
 
     async function handleManualSubmit(event) {
         event.preventDefault()
-
+        
+        
         const form = event.currentTarget
         const url = new URL(form.action)
         const formData = new FormData(form)
+        
         const fetchOptions = {
             mode: 'cors',
             method: form.method,
             body: formData,
         }
+        
+        const transaction = {
+            title: formData.get('title'),
+            money: formData.get('money'),
+        }
 
-<<<<<<< HEAD
-	    // check and make sure the required items are filled out
-=======
->>>>>>> origin/login
+
+        msg("Handling the submission process" + transaction.title + "money:" + transaction.money);
+        return;
+
         if (formData.get('title') != '' && formData.get('money') != '') {
             try {
                 const response = await fetch(url, fetchOptions)
@@ -82,20 +107,19 @@ export default function Home() {
         }
     }
 
-<<<<<<< HEAD
-    // set up event handlers when the page loads
     useEffect(() => {
-        const form = document.querySelector('form')
-        form.addEventListener('submit', async (event) => { await handleFileSubmit(event) })
-=======
-    useEffect(() => {
-        const form = document.querySelector('form')
-        form.addEventListener('submit', handleFileSubmit)
->>>>>>> origin/login
 
-        const manualForm = document.querySelector('.manualForm')
-        manualForm.addEventListener('submit', async (event) => { await handleManualSubmit(event) })
+        async function checkLoginStatus() {
+            userLoggedIn = await UserLoggedIn();
+            if(userLoggedIn.LoginStatus == false)
+            {
+                router.push('/');
+            }
+        }
+      
+        checkLoginStatus(); // Call the function to check login status when the component mounts
     })
+
     return (
         <>
             <Head>
@@ -105,40 +129,33 @@ export default function Home() {
                 <div className={styles.upload_flex_container}>
                     <div className={styles.upload_flex_child}>
                         <h3>Upload Financial Documentation</h3>
-<<<<<<< HEAD
-                        <form action={server_url.concat("/api/upload")} method='post' encType='multipart/form-data'>
-=======
-                        <form action='http://localhost:5000/api/upload' method='post' encType='multipart/form-data'>
+
+                        <form onSubmit={handleFileSubmit} encType='multipart/form-data'>
                             File name: <input type='text' name='title' />
->>>>>>> origin/login
                             <input type='file' name='files'></input>
                             <button>Upload Financial CSV</button>
                         </form>
+
                     </div>
                     <div className={styles.upload_flex_child}>
                         <h3>Type in Transaction</h3>
-<<<<<<< HEAD
-                        <form className="manualForm" action={server_url.concat("/api/upload")} method='post' encType='multipart/form-data'>
+
+                        <form onSubmit={handleManualSubmit} className="manualForm" encType='multipart/form-data'>
                             <table>
                                 <tbody>
-                                    <tr><th>Title/Name</th><th>Date</th><th>Monetary Value</th><th>Category</th></tr>
-=======
-                        <form className="manualForm" action='http://localhost:5000/api/upload' method='post' encType='multipart/form-data'>
-                            <table>
-                                <tbody>
-                                    <tr><th>Title/Name</th><th>Monetary Value</th><th>Category</th></tr>
->>>>>>> origin/login
                                     <tr>
-                                        <td><input type='text' name='title' /></td>
-                                        <td><input type="text" name="money" /></td>
-                                        <td><input type="text" name="category" /></td>
-<<<<<<< HEAD
-                                        <td><input type="text" name="date" /></td>
-=======
->>>>>>> origin/login
+                                        <td>Description</td>
+                                        <td>Posting Date</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type='text' name='Description' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required/></td>
+                                        <td><input type='text' name='PostingDate' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required/></td>
+                                        <td><input type="text" name="Amount" pattern="\d+(\.\d{1,2})?" title="Enter a valid amount" required  /></td>
                                     </tr>
                                 </tbody>
                             </table>
+
                             <button>Submit Transaction</button>
                         </form>
                     </div>
@@ -146,8 +163,4 @@ export default function Home() {
             </main>
         </>
     )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/login

@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(require("./models/user"));
+app.use(require("./models/data"));
 
 app.listen(port, () => {
     // perform a database connection when server starts

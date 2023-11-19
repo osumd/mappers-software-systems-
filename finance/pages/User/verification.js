@@ -58,8 +58,6 @@ export default async function VerifyNewUserCredentials(UserCredentials)
     return {passed: (PasswordTest & UsernameTest), message: "Error credentials not valid. Please enter a valid password atleast 8 characters, include atleast one uppercase, one number and one symbol."};
 }
 
-
-
 export async function UserLoggedIn()
 {
 
@@ -76,13 +74,16 @@ export async function UserLoggedIn()
     try{
         var usertoken = sessionStorage.getItem('usertoken');
         const localusertoken = localStorage.getItem('usertoken');
-        msg("Usertoken: " + usertoken);
-        if(localusertoken != "")
+        
+        msg("Session Token: " + usertoken + "Local Token: " + localusertoken);
+
+        if(localusertoken != "" && localusertoken != null)
         {
             usertoken = localusertoken;
         }
         
-        if(usertoken == "")
+
+        if(usertoken == "" || usertoken == null)
         {
             msg("User token was empty.");
             return {LoginStatus: false};
@@ -111,23 +112,23 @@ export async function UserLoggedIn()
             msg(data);
             if(data != null)
             {
-                return {LoginStatus: data.validation};
+                return {LoginStatus: data.validation, user_id: data.user_id};
             }
             else
             {
                 //sessionStorage.setItem('usertoken',null);
-                return {LoginStatus: false};  
+                return {LoginStatus: false, user_id:0};  
             }    
         }else
         {
             msg("Error:" + response.status);
             //sessionStorage.setItem('usertoken',null);
-            return {LoginStatus: false};
+            return {LoginStatus: false, user_id: 0};
         }
 
     }catch(error){
         //sessionStorage.setItem('usertoken',null);
-        return {LoginStatus: false};
+        return {LoginStatus: false, user_id: 0};
     }
 }
 
@@ -147,13 +148,16 @@ export async function VisibleUserData()
     try{
         var usertoken = sessionStorage.getItem('usertoken');
         const localusertoken = localStorage.getItem('usertoken');
-        msg("Usertoken: " + usertoken);
-        if(localusertoken != "")
+        
+        msg("Session Token: " + usertoken + "Local Token: " + localusertoken);
+
+        if(localusertoken != "" && localusertoken != null)
         {
             usertoken = localusertoken;
         }
         
-        if(usertoken == "")
+
+        if(usertoken == "" || usertoken == null)
         {
             msg("User token was empty.");
             return {LoginStatus: false};

@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import MyForm from './exampleForm';
 
 import * as ComponentList from './component/componentList';
-
+import Graph from './graph';
 function UserLoggedInHome()
 {
   return (
@@ -80,10 +80,12 @@ function UserLoggedOutHome()
 
 
       <div className={styles.foot}>
+        <Graph />
       <footer>
         Golden Mapper Industries (copyright 2027)
       </footer>
       </div>
+    
       
 
       <style jsx>{`

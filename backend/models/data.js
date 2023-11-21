@@ -64,23 +64,31 @@ function ParseManualTransaction(fields) {
 async function parseCSVStream(csvStream, user_id) {
     const allTransactions = [];
 
+
+
     // Use csv-parser to parse the CSV stream
     fs.createReadStream(csvStream)
         .pipe(csvParser())
         .on('data', (data) => {
             if (data) {
+                //Process each row of data as needed
+                var transValidation = validateTransaction(data);
+                if(transValidation.validationStatus == true)
+                {
+                   data.user_id = user_id;
+                   allTransactions.push(data);
+                }
                 
-                // Process each row of data as needed
-                data.user_id = user_id;
-                allTransactions.push(data);
             }
         })
         .on('end', async () => {
             // All rows have been processed
             let db_connect = dbo.getDB("HighPriv");
+            //https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
+            //db.collection.updateMany(doc, doc, {upsert:true}) to prevent duplications
             let collection = db_connect.collection("transactions");
             //console.log('CSV stream parsed:', allTransactions);
-            
+        
 
             try {
                 // Insert multiple documents into the collection
@@ -96,9 +104,9 @@ async function parseCSVStream(csvStream, user_id) {
 
 const acceptedRowInsertions =
 {
-    description: { pattern: 0, required: false},
+    description: { pattern: /"\w"/, required: false},
     posting_date: { pattern: 0, required: false},
-    amount: {},
+    amount: { pattern: /0/, required: false},
 };
 
 const acceptedTagMap = new Map([
@@ -110,15 +118,30 @@ const acceptedTagMap = new Map([
 
 function validateTransaction(transactionJson)
 {
-    acceptedTagMap.forEach((value, key) => {
-        // Check if the property specified in acceptedTagMap is present in the processed data
-        if (data[key]) {
-            foundItems.push(key);
-        }else if()
+
+    const keys = Object.keys(transactionDetails);
+    keys.forEach(key => {
+    const value = transactionDetails[key];
+    console.log(value);
+    var valueInMap = acceptedTagMap.get(key);
+    if(valueInMap == undefined)
+    {
+
+    }else
+    {   
+        var requirementMet = valueInMap.pattern.test(value);
+        if(valueInMap.required == true && requirementMet == false)
+        {
+            return {validationStatus: false}
+        }
+        if(requirementMet)
         {
 
         }
+    }
+    console.log(`${key}: ${value}`);
     });
+
 }
 
 module.exports = recordRoutes;

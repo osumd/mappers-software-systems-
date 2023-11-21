@@ -25,7 +25,7 @@ function UserLoggedInHome()
         <Link href="/user/component">Component</Link>
 
         <div className={styles.navcenter}>
-          <Link href="/">Dashboard</Link>
+          <Link href="/upload/upload">Upload</Link>
         </div>
         <div className={styles.navright}>
           <Link href="/search/">Search</Link>

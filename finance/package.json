@@ -1,13 +1,16 @@
 {
   "private": true,
+  "proxy": "http://localhost:5000/",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "start": "next start"
   },
   "dependencies": {
-    "jsonwebtoken": "^9.0.2",
     "chart.js": "^4.4.0",
+    "faker": "^6.6.6",
+    "isomorphic-unfetch": "^4.0.2",
+    "jsonwebtoken": "^9.0.2",
     "next": "latest",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",

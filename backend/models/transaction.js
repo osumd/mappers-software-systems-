@@ -105,7 +105,7 @@ recordRoutes.route("/transactions/monthly/:category").get(async function(req, re
     let results = await db_connect
     .collection("transactions")
     .aggregate([
-      { $match: myquery}
+      { $match: myquery }
     ]).toArray();
     res.json(results);
   });

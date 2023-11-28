@@ -118,7 +118,6 @@ const acceptedTagMap = new Map([
 
 function validateTransaction(transactionJson)
 {
-
     const keys = Object.keys(transactionDetails);
     keys.forEach(key => {
     const value = transactionDetails[key];

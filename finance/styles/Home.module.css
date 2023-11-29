@@ -1,23 +1,114 @@
 
-.comp1 {
-  background-color: #0070f3;
+.body {
+  padding: 0.5%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  margin-bottom: 0.5%;
+  margin-top: 0.5%;
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: auto;
+
   text-align: center;
+}
+
+.funcBody {
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: auto;
+
+  text-align: center;
+}
+
+.topHalf {
+  overflow: hidden;
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.bottomHalf {
+  overflow: hidden;
+  
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: auto;
+
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* .child {
+  flex: 1;
+  background-color: purple;
+  margin: 0.5%;
+  padding: 0.5%;
+} */
+
+
+.comp1 {
+  text-align: center;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 
 .comp2 {
-  background-color: red;
   text-align: center;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 
 .comp3 {
-  background-color: green;
   text-align: center;
+  height: 41vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 
 .comp4 {
-  background-color: yellow;
   text-align: center;
+  height: 41vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
+
 
 
 .foot {
@@ -61,28 +152,12 @@
   border-radius: 10px;
 }
 
-.componentTray
-{
-  display: grid;
-  grid-template-columns: [first] 20% [line2] 20% [line3] 20% [col4-start] 20% [five];
-  grid-template-rows: [first] 20% [line2] 20% [line3] 20% [col4-start] 20% [five];
-
-}
-
-.randomTray
-{
-  width: 50%;
-  grid-template-columns: auto auto auto auto;
-  padding-left: 20%;
-  padding-right:20%;
-  display:grid;
-}
 .nav a:hover {
   background-color: black;
   color: white;
 }
 
-.navcenter a{
+.navcenter a {
   float: none;
   position: absolute;
   top: 50%;
@@ -110,26 +185,11 @@
 }
 
 
-.body {
-  padding: 0.5%;
-  overflow: hidden;
 
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
-
-  margin-bottom: 0.5%;
-  margin-top: 0.5%;
-
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  flex: auto;
-}
 
 
 .container {
+  max-height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;
@@ -233,13 +293,4 @@
     width: 100%;
     flex-direction: column;
   }
-}
-
-.budget_container{
-
-
-}
-
-.budget_child{
-  
 }

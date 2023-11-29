@@ -1,16 +1,34 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import {Layout} from "../components/header"
+import Layout from "../components/header"
 
-import Link from 'next/link';
-import { UserLoggedIn } from './User/verification';
-import React, { useState, useEffect } from "react";
-import MyForm from './exampleForm';
 
-import * as ComponentList from './component/componentList';
-import Graph from './graph';
-function UserLoggedInHome()
-{
+export default function Home() {
+
+
+  function myHomeFunction(choice){
+
+
+    //This return can be replaced with returning components
+    return (
+      <Layout>
+        <div className={styles[`comp${choice}`]}>
+          <div className={styles.funcBody}>
+            Component
+          </div>
+        </div>
+        
+      </Layout>
+    )
+
+  }
+
+
+
+  // var homeComponents = [myHomeFunction, xyz];
+
+  // TODO: Move <style> tag below into CSS file
+  // TODO: when different pages have been created, update the navigation links
   return (
     <Layout>
     <div className={styles.container}>
@@ -18,67 +36,75 @@ function UserLoggedInHome()
         <title>RocketMoney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+  
+{/* ------------------------------------NAV BAR----------------------------------------------------- */}
 
       <div className={styles.nav}>
-        <Link href="/User/signup">Account</Link>
-        <Link href="/user/component">Component</Link>
+
+        <a href=''>Account</a>
+        <a href=''>Componenent</a>
 
         <div className={styles.navcenter}>
-          <Link href="/upload/upload">Upload</Link>
+          <a href=''>Dashboard</a>
         </div>
         <div className={styles.navright}>
-          <Link href="/search/">Search</Link>
-          <Link href="/component/0">Component</Link>
+          <a href=''>Search</a>
+          <a href=''>Componenent</a>
         </div>
       </div>
 
-
+{/* ------------------------------------BODY-------------------------------------------------------- */}
 
       <div className={styles.body}>
 
 
-        
-        <div className={styles.randomTray}>
-            {ComponentList.Components[0]}
-            {ComponentList.Components[1]}
-            {ComponentList.Components[2]}
-        </div>
+     {/* ------------------TOP HALF----------------- */}
+
 
         <div className={styles.topHalf}>
-          <div>
-            
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(1)}
+          {/* </div> */}
   
-          <div>
-            {}
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(2)}
+          {/* </div> */}
         </div>
+
+
+    {/* ------------------BOTTOM HALF--------------- */}
+
 
         <div className={styles.bottomHalf}>
-          <div>
-            {}
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(3)}
+          {/* </div> */}
 
-          <div>
-          
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(4)}
+          {/* </div> */}
         </div>
-          
-          {}
+        
+
           {/* <xyz props={}/>
           {xyz()} */}
+
+
       </div>
 
 
+{/* ------------------------------------FOOTER----------------------------------------------------- */}
+
       <div className={styles.foot}>
-        <Graph />
       <footer>
         Golden Mapper Industries (copyright 2027)
       </footer>
       </div>
-    
       
+
+
+
+{/* ------------------------------------EXTRA------------------------------------------------------ */}
 
       <style jsx>{`
         main {
@@ -96,51 +122,6 @@ function UserLoggedInHome()
     </div>
     </Layout>
   );
-
-
 }
-
-function UserLoggedOutHome()
-{
-  return (
-    <>
-        <Link href="/User/login">Log In</Link><br></br>
-    </>
-  );
-}
-
-export default function Home() {
-
-  const [loginBasedHome, setLoginBasedHome] = useState(null); // Initialize loginBasedHome with null
-
-  useEffect(() => {
-    async function checkLoginStatus() {
-      const userLoggedIn = await UserLoggedIn();
-      const componentToRender = userLoggedIn.LoginStatus ? UserLoggedInHome() : UserLoggedOutHome();
-      setLoginBasedHome(componentToRender); // Set the component based on user's login status
-    }
-
-    checkLoginStatus(); // Call the function to check login status when the component mounts
-  }, []); // Empty dependency array ensures the effect runs once after the initial render
-
-  if (loginBasedHome === null) {
-    // Render loading state if loginBasedHome is still null (while waiting for the API response)
-    return UserLoggedOutHome();
-  }
-
-  return (
-    <>
-    <Head>
-      <title>Golden Finance</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-        <h1>Golden Finance</h1>
-        {loginBasedHome}
-    </>
-  );
-}
-
-
-
 
 

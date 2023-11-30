@@ -17,6 +17,7 @@ app.use(express.json());
 
 app.use(require("./models/user"));
 app.use(require("./models/data"));
+app.use(require("./models/budget"));
 
 app.listen(port, () => {
     // perform a database connection when server starts

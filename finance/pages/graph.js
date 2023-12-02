@@ -26,7 +26,7 @@ ChartJS.register(
   LineController,
   BarController
 );
-const spendings = [100, 200, 200, 300, 200, 200, 200]
+const budget_amount= [50, 50, 0, 300 , 200, 200, 50]
 //const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November','December'];
 
 
@@ -49,10 +49,11 @@ useEffect(() => {
     })
     .then((data) => {
       setValue(data)
+      return value;
       console.log(data)
     })
     .catch(error=> console.error(error))
-}, []);
+}, [])
 return value
 }
 
@@ -60,10 +61,23 @@ export default function Graph({
   transactions}) {
     const [category, setCategory] = useState('Restaurants')
 
-    const [chart, setChart] = useState(initChart([{_id: 0, spending: 0}]))
+    const [chart, setChart] = useState(initChart([{_id: 0, spending: 0}], false))
+    let budget={}
+
 
   //console.log(transactions)
    let categorySelector = fetcher("/categories")
+   if (categorySelector){
+  
+    for (let i =0; i < categorySelector.length; i++){
+      budget[categorySelector[i]] = budget_amount[i]
+     }
+    
+    }
+   
+   //fill category with random budget
+
+
 
    let getMonthlySpending = fetcher("/transactions/monthly/Restaurants")
 
@@ -75,21 +89,13 @@ export default function Graph({
       .then((data) => {
   
         console.log(data)
-        setChart(initChart(data))
+        setChart(initChart(data, budget))
       })
       .catch(error=> console.error(error))
   }, [category]);
 
-
-  const handleChart = async () => {
-    // const data = await (await fetch(`http://localhost:5000/transactions/monthly/${category}`)).json()
-    // console.log(data)
-    // setSpending(data)
-
-    
-
-  }
-  function initChart(spending){
+  function initChart(spending, budget){
+    console.log(budget)
     return {
       labels: spending.map(month=>month._id),
       datasets: [
@@ -98,6 +104,19 @@ export default function Graph({
           label: 'Dataset 3',
           backgroundColor: 'rgb(53, 162, 235)',
           data: spending.map(month=>month.spending),
+        },
+        {
+          type: 'line',
+          data: spending.map(month=> {
+            if (budget){
+              return budget[category]
+            }
+            else{
+              return 0
+            }
+          })
+          
+            
         }
       ]
     }

@@ -24,13 +24,13 @@ app.listen(port, () => {
     dbo.ConnectToDatabase();
     console.log("Connected To Finance Manager Database. Port: ", port);
 });
-// function deleteAll(collName){
-//     let db_connect = dbo.getDB("Finance");
+function deleteAll(collName){
+    let db_connect = dbo.getDB("Finance");
  
-// db_connect
-//   .collection(collName)
-//   .deleteMany({})
-//   console.log("delete")
+db_connect
+  .collection(collName)
+  .deleteMany({})
+  console.log("delete")
 
-// }
-// deleteAll("transactions")
+}
+deleteAll("transactions")

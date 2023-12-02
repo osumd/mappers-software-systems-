@@ -135,11 +135,14 @@ export default function Graph({
 <select onChange={byCategory}> {categorySelector.map(category=>
 <option value={category}>{category}</option>)}
 </select>
+
 {chart &&
   <Chart type='bar'
   data={
     chart
   } />};
+
   </> 
   )
+ 
 }

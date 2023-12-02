@@ -41,5 +41,4 @@ recordRoutes.route("/budgetItems/:userId").get(async function(req,res){
         res.status(500).json({ error: "Failed to retrieve budget items" });
     }
 });
-
 module.exports = recordRoutes;

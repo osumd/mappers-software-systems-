@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import {Layout} from "../components/header"
-import React, { useEffect, useState } from 'react';
-import Graph from "./graph";
-import BudgetTool from './budget/budgetTool';
+
 
 export default function Home() {
 
@@ -64,10 +62,9 @@ export default function Home() {
 
 
         <div className={styles.topHalf}>
-        <div className={styles.child}>
-            <Graph/>
-            
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(1)}
+          {/* </div> */}
   
           {/* <div className={styles.child}> */}
             {myHomeFunction(2)}
@@ -79,13 +76,13 @@ export default function Home() {
 
 
         <div className={styles.bottomHalf}>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(3)}
+          {/* </div> */}
 
-
-
-          <div className={styles.child}>
-          <BudgetTool/>
-
-          </div>
+          {/* <div className={styles.child}> */}
+            {myHomeFunction(4)}
+          {/* </div> */}
         </div>
         
 

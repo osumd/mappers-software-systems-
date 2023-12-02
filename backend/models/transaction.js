@@ -14,14 +14,14 @@ const ObjectId = require("mongodb").ObjectId;
 
 const jwt = require('jsonwebtoken');
 const secretKey = '&^da0X*f)9$$u#2$0c./*DzaD%%3qFS*$%%42x#0!9uVs{029}a131312';
- const dbName = "Finance"
-
+ const dbName = "HighPriv"
+const collection = "Transactions"
 
  recordRoutes.route("/allTransactions").get(function (req, res) {
   let db_connect = dbo.getDB(dbName);
  
   db_connect
-    .collection("transactions")
+    .collection(collection)
     .find({})
     .toArray(function (err, result) {
       if (err) throw err;
@@ -32,8 +32,8 @@ const secretKey = '&^da0X*f)9$$u#2$0c./*DzaD%%3qFS*$%%42x#0!9uVs{029}a131312';
  recordRoutes.route("/categories").get(async function (req, res) {
   let db_connect = dbo.getDB(dbName);
  const found= await db_connect
-    .collection("transactions")
-    .distinct("Category", {});
+    .collection(collection)
+    .distinct("category", {});
     res.json(found)
 
  });
@@ -41,23 +41,23 @@ const secretKey = '&^da0X*f)9$$u#2$0c./*DzaD%%3qFS*$%%42x#0!9uVs{029}a131312';
 
   let db_connect = dbo.getDB(dbName);
   const result = await db_connect
-  .collection("transactions")
+  .collection(collection)
   .aggregate([
-    {$group: {_id: "$Category", spending: {$sum: "$Amount"}}
+    {$group: {_id: "$category", spending: {$sum: "$amount"}}
     }
   ]).toArray();
   res.json(result)
 });
 const projectMonthYear = 
   {
-    "MM/YYYY": {$concat: [{$toString:{$month: "$Date"}}, "/", { $toString: {$year: "$Date"}}]},
-    "Amount": 1,
-    "Description": 1,
-    "Category": 1
+    "MM/YYYY": {$concat: [{$toString:{$month: "$date"}}, "/", { $toString: {$year: "$date"}}]},
+    "amount": 1,
+    "description": 1,
+    "category": 1
   }
 const getSpending=
 {
-  "Amount": {$gte: 0}
+  "amount": {$gte: 0}
 }
 recordRoutes.route("/transactions/monthly/relative/:count").get(async function(req, res){
   let tomonth = new Date().getMonth();
@@ -77,22 +77,22 @@ recordRoutes.route("/transactions/monthly/relative/:count").get(async function(r
 
   let db_connect = dbo.getDB(dbName);
   const result = await db_connect
-  .collection("transactions")
+  .collection(collection)
   .aggregate([
-    {$match: Object.assign({"Date": {$gte: min}}, getSpending)},
+    {$match: Object.assign({"date": {$gte: min}}, getSpending)},
      {$project: projectMonthYear},
-     {$group: {_id: "$MM/YYYY" , spending: {$sum: "$Amount"} } }
+     {$group: {_id: "$MM/YYYY" , spending: {$sum: "$amount"} } }
   ]).toArray();
   res.json(result)
 })
 recordRoutes.route("/transactions/monthly/:category").get(async function(req, res){
   let db_connect = dbo.getDB(dbName);
   const result = await db_connect
-  .collection("transactions")
+  .collection(collection)
   .aggregate([
-    {$match:   Object.assign({Category: req.params.category}, getSpending)},
+    {$match:   Object.assign({category: req.params.category}, getSpending)},
      {$project: projectMonthYear},
-     {$group: {_id: "$MM/YYYY" , spending: {$sum: "$Amount"} } }
+     {$group: {_id: "$MM/YYYY" , spending: {$sum: "$amount"} } }
   ]).toArray();
   res.json(result)
 })
@@ -103,7 +103,7 @@ recordRoutes.route("/transactions/monthly/:category").get(async function(req, re
       Category: req.params.category
     };
     let results = await db_connect
-    .collection("transactions")
+    .collection(collection)
     .aggregate([
       { $match: myquery }
     ]).toArray();
@@ -121,7 +121,7 @@ recordRoutes.route("/transaction/:id").get(async function (req, response) {
      Amount: parseFloat(req.params.id)
    };
  
-   const collection = db_connect.collection("transactions");
+   const collection = db_connect.collection(collection);
    const found = await collection.findOne(myquery);
    response.json(found);
  });
@@ -156,7 +156,7 @@ recordRoutes.route("/transactions").get(async function (req, response) {
     msg("Currently searching transacions for " + myquery);
 
 
-    const collection = db_connect.collection("transactions");
+    const collection = db_connect.collection(collection);
     if(collection == undefined)
     {
       msg("Collection returning undefined");
@@ -196,7 +196,7 @@ recordRoutes.route("/transaction").get(async function (req, response) {
   msg("Transaction id : " + transaction);
 
   try{
-    let collection = db_connect.collection("transactions");
+    let collection = db_connect.collection(collection);
     let verification = await collection.findOne(transaction);
     
     if(verification != null)
@@ -242,7 +242,7 @@ recordRoutes.post("/transaction/insert", async function (req, response) {
   
   try{
 
-    let collection = db_connect.collection("transactions");
+    let collection = db_connect.collection(collection);
     if(collection == undefined)
     {
       msg("Collection was undefined");

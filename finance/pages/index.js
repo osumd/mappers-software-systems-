@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css';
 import {Layout} from "../components/header"
 import React, { useEffect, useState } from 'react';
 import Graph from "./graph";
-import BudgetTool from './budget/budgetTool';
+import BudgetPieChart from './budget/budgetPieChart';
 
 export default function Home() {
 
@@ -83,7 +83,7 @@ export default function Home() {
 
 
           <div className={styles.child}>
-          <BudgetTool/>
+          <BudgetPieChart/>
 
           </div>
         </div>

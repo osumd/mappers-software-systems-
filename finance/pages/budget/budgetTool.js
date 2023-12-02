@@ -10,12 +10,14 @@ export default function BudgetTool(){
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
     const [budgetData, setBudgetData] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
 
     //const user_id = userLoggedIn.user_id;
     const user_id = "12345";
 
     useEffect(() => {
         fetchBudgetItems();
+        fetchCategoryList();
     }, [user_id]);
 
    const fetchBudgetItems = async () => {
@@ -29,6 +31,20 @@ export default function BudgetTool(){
             }
         } catch {
             console.error("Error fetching budget items", error);
+        }
+    }
+
+    const fetchCategoryList = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/categories/");
+            if(response.ok){
+                const data = await response.json();
+                setCategoryList(data);
+            } else {
+                console.error("Failed to fetch category list");
+            }
+        } catch {
+            console.error("Error fetching category list", error);
         }
     }
 
@@ -72,11 +88,19 @@ export default function BudgetTool(){
     return (
     <div className={styles.container}>
         <div>
-            <BudgetPieChart budgetData = {budgetData}/>
+            <BudgetPieChart/>
         </div>
         <div> 
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)}/>
+                {/*<input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)}/>*/}
+                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Select a category</option>
+                        {categoryList.map((categoryItem, index) => (
+                            <option key={index} value={categoryItem}>
+                                {categoryItem}
+                            </option>
+                        ))}
+                </select>
                 <input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
                 <button type="submit">Add Budget</button>
             </form>

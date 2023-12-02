@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function BudgetPieChart( {budgetData} ){
+export default function BudgetPieChart(){
+
+  const [budgetData, setBudgetData] = useState([]);
+  const user_id = "12345";
+
+  useEffect(() => {
+    fetchBudgetItems();
+});
+
+  const fetchBudgetItems = async () => {
+    try {
+        const response = await fetch(`http://localhost:5000/budgetItems/${user_id}`);
+        if (response.ok){
+            const data = await response.json();
+            setBudgetData(data);
+        } else {
+            console.error("Failed to fetch budget items");
+        }
+    } catch {
+        console.error("Error fetching budget items", error);
+    }
+  }
+
     const data = {
         labels: [],
         datasets: [

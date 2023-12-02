@@ -190,6 +190,8 @@ recordRoutes.post("/user/login",async function(req,response){
       }
   }
 
+  msg("\n\n\n Beginning login \n\n\n");
+
   let db_connect = dbo.getDB("HighPriv");
 
   let user = {
@@ -234,15 +236,18 @@ recordRoutes.post("/user/usertoken", async function(req,response){
       }
   }
 
+  msg("\n\n\n Beginning usertoken \n\n\n");
+
+  msg("Current User Token: " + req.body._usertoken);
   let db_connect = dbo.getDB("HighPriv");
-  if(req.body._usertoken == null)
+  if(req.body._usertoken == null || req.body._usertoken == "")
   {
-    response.json({validation: false});
+    response.json({validation: false, user_id: 0});
 
   }else
   {
     try{
-      const decoded = jwt.decode(req.body._usertoken, secretKey);
+      const decoded = jwt.verify(req.body._usertoken, secretKey);
 
       const user = {
         username: decoded.username,
@@ -252,19 +257,19 @@ recordRoutes.post("/user/usertoken", async function(req,response){
       let verification = await collection.findOne(user);
       if(verification != null)
       {
-        response.json({validation: true});
+        response.json({validation: true, user_id: verification._id});
         msg("Succesfully validated token: " + verification);
 
       }else
       {
         msg('Token verification failed');
-        response.json({validation: false});
+        response.json({validation: false, user_id: 0});
       }
       
     }catch(error)
     {
       msg('Token verification failed:', error.message);
-      response.json({validation: false});
+      response.json({validation: false, user_id: 0});
     }
   }  
 });

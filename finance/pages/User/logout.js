@@ -74,5 +74,5 @@ export default function UserLogOut()
     const router = useRouter();
     sessionStorage.setItem('usertoken', "");
     localStorage.setItem('usertoken', "");
-    router.push('/user/login');      
+    router.push('/User/login');      
 }

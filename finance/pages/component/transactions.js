@@ -13,13 +13,14 @@ export function Item({transaction}){
 export default function Transactions({category}){
   const [list, setList] = useState([])
   useEffect(() => {
-    fetch(`http://localhost:5000/transactions/`)
+    fetch(`http://localhost:5000/myTransactions/`)
       .then((res) => {
         return res.json();
       })
       .then((data) => {
   
         console.log(data)
+        setList(data);
       })
       .catch(error=> console.error(error))
   }, [category]);

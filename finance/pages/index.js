@@ -4,7 +4,7 @@ import {Layout} from "../components/header"
 import React, { useEffect, useState } from 'react';
 import Graph from "./graph";
 import BudgetPieChart from './budget/budgetPieChart';
-
+import Transactions from './component/transactions';
 export default function Home() {
 
 
@@ -68,10 +68,10 @@ export default function Home() {
             <Graph/>
             
           </div>
-  
-          {/* <div className={styles.child}> */}
-            {myHomeFunction(2)}
-          {/* </div> */}
+          <div className={styles.child}>
+            <Transactions/>
+            
+          </div>
         </div>
 
 

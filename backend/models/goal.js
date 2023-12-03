@@ -2,10 +2,10 @@ const express = require("express");
 const recordRoutes = express.Router();
 const dbo = require("../dbo");
 const user_id = 0;
+const { BSON, EJSON, ObjectId } = require('bson');
+recordRoutes.post("/goal", async function (req,response){
 
-recordRoutes.post("/goals", async function (req,response){
-    const user_id = req.body.user_id;
-    const {name, threshold} = req.body.goal_data;
+    const {name, threshold, amount, due_date} = req.body
 
     try{
         let db_connect = dbo.getDB("HighPriv");
@@ -14,34 +14,34 @@ recordRoutes.post("/goals", async function (req,response){
         const goalDocument = {
             user_id: user_id,
             name: name,
-            amount: 0,
-           threshold: threshold
+            amount: amount,
+           threshold: threshold,
+           due_date: due_date
         };
 
-        await collection.insertOne(goalDocument);
-
-        response.status(200).json({message: "Budget item uploaded successfully"});
+        const item = await collection.insertOne(goalDocument);
+        console.log(item);
+        response.status(200).json(item);
     } catch(error){
         console.error("Error uploading budget item:", error);
         response.status(500).json({ error: "Failed to upload budget item" });
     }
 });
 
-recordRoutes.post("/goals/:id", async function (req,response){
-    const goal_id = req.params.id;
-    const added_amount = req.body.amount;
+recordRoutes.post("/goal/transfer", async function (req,response){
+
+    const change= parseFloat(req.body.change);
 
     try{
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Goals");
-
-
-        await collection.updateOne(
-            {"id": goal_id},
-            {$inc : {"amount": added_amount}}
+        console.log(change);
+       const item= await collection.updateOne(
+            {"_id": new BSON.ObjectId(req.body.id)},
+            {$inc : {"amount": change}}
         )
-        
-        response.status(200).json({message: "Budget item uploaded successfully"});
+        console.log(item);
+        response.status(200).json(item);
     } catch(error){
         console.error("Error uploading budget item:", error);
         response.status(500).json({ error: "Failed to upload budget item" });

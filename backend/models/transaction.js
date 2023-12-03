@@ -17,18 +17,24 @@ const secretKey = '&^da0X*f)9$$u#2$0c./*DzaD%%3qFS*$%%42x#0!9uVs{029}a131312';
  const dbName = "HighPriv"
 const collection = "Transactions"
 
- recordRoutes.route("/allTransactions").get(function (req, res) {
+ recordRoutes.route("/allTransactions").get(async function (req, res) {
   let db_connect = dbo.getDB(dbName);
  
-  db_connect
-    .collection(collection)
-    .find({})
-    .toArray(function (err, result) {
-      if (err) throw err;
-      
-      res.json(result);
-    });
- });
+  const found= await db_connect
+  .collection(collection)
+  .find();
+  res.json(found)
+
+});
+recordRoutes.route("/myTransactions").get(async function (req, res) {
+  let db_connect = dbo.getDB(dbName);
+ 
+  const found= await db_connect
+  .collection(collection)
+  .find({}).sort({date: -1}).limit(10).toArray();
+  res.json(found)
+
+});
  recordRoutes.route("/categories").get(async function (req, res) {
   let db_connect = dbo.getDB(dbName);
  const found= await db_connect

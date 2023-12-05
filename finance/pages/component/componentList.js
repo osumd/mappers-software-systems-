@@ -1,4 +1,4 @@
-import BudgetForm from "../budgetForm";
+
 import BudgetPieChart from "../budgetPieChart";
 import MyForm    from "../exampleForm";
 import {useState} from 'react';
@@ -16,7 +16,7 @@ const COMPONENT_ENUM = {
 
 var Components = [
     <MyForm></MyForm>,
-    <BudgetForm></BudgetForm>,
+    //<BudgetForm></BudgetForm>,
     BudgetPieChart([
         { category: "Food", amount: 500 },
         { category: "Entertainment", amount: 200 },

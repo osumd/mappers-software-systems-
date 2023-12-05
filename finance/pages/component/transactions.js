@@ -3,7 +3,7 @@ export function Item({transaction}){
 
   return (
     <>
-        <p>{transaction.date}</p>
+    <p>{transaction.date}</p>
     <h3>{transaction.description}</h3>
     <p>{transaction.category}</p>
     <p>{transaction.amount}</p>
@@ -13,14 +13,14 @@ export function Item({transaction}){
 export default function Transactions({category}){
   const [list, setList] = useState([])
   useEffect(() => {
-    fetch(`http://localhost:5000/transactions/${category}`)
+    fetch(`http://localhost:5000/myTransactions/`)
       .then((res) => {
         return res.json();
       })
       .then((data) => {
   
         console.log(data)
-        setChart(initChart(data, budget))
+        setList(data);
       })
       .catch(error=> console.error(error))
   }, [category]);

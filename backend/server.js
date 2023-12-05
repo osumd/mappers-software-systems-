@@ -19,6 +19,7 @@ app.use(require("./models/user"));
 app.use(require("./models/data"));
 app.use(require("./models/budget"));
 app.use(require("./models/transaction"))
+app.use(require("./models/goal"))
 
 app.listen(port, () => {
     // perform a database connection when server starts

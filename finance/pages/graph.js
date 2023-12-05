@@ -12,7 +12,7 @@ import {
   BarController,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
-import { InferGetStaticPropsType, GetStaticProps } from 'next'
+
 const filepath  = "../data/statement.csv"
 
 ChartJS.register(

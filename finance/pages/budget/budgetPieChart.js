@@ -22,7 +22,7 @@ export default function BudgetPieChart(){
         } else {
             console.error("Failed to fetch budget items");
         }
-    } catch {
+    } catch(error) {
         console.error("Error fetching budget items", error);
     }
   }

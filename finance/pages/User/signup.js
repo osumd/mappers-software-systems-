@@ -1,16 +1,35 @@
-import React, { useContext, useState } from "react";
-import { useRouter } from 'next/router';
+import React, { useContext, useState, useEffect } from "react";
+import { useRouter} from 'next/router';
 
 import VerifyNewUserCredentials from "./verification";
+import { UserLoggedIn } from '../User/verification';
 import {Layout} from "../../components/header"
 
 //This Error_Data is a context module and just serves as an example for global state.
 import {Error_Data} from "../../root/GlobalComponents/ErrorContext"
 
-var SignUpErrorMessage = "what happend";
+var SignUpErrorMessage = "";
 
 export default function Create() {
     const router = useRouter();
+
+    var userLoggedIn ={
+      LoginStatus: false,
+      user_id: 0,
+    };
+    useEffect(() => {
+
+      async function checkLoginStatus() {
+          userLoggedIn = await UserLoggedIn();
+          console.log(userLoggedIn);
+          if(userLoggedIn.LoginStatus == true)
+          {
+              router.push('/dashboard');
+          }
+      }
+    
+      checkLoginStatus(); // Call the function to check login status when the component mounts
+    });
     
     //This Error_Data is a context module and just serves as an example for global state.
     const {error, raiseError} = useContext(Error_Data);
@@ -25,6 +44,8 @@ export default function Create() {
         return { ...prev, ...value };
         });
     }
+
+
 
     async function insertUser(newUser)
     {
@@ -99,7 +120,7 @@ export default function Create() {
       {
         sessionStorage.setItem('usertoken', insertValidation);
         localStorage.setItem('usertoken', insertValidation);
-        router.push('/');
+        router.push('/dashboard');
       }else
       {
         sessionStorage.setItem('usertoken', "");
@@ -143,6 +164,15 @@ export default function Create() {
               className="btn btn-primary"
             />
           </div>
+          <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                router.push("/User/login");
+              }}
+            >
+              Log In
+            </button>
         </form>
       </div>
       </Layout>

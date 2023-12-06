@@ -1,6 +1,8 @@
-import {useState, useEffect} from "react"
+import React, { useState } from "react";
+import {Layout} from "../../components/header";
+import VerifyUser from "./verification";
 import { useRouter } from 'next/router';
-
+import {useEffect} from 'react';
 async function LogUserOutServer()
 {
 
@@ -69,10 +71,23 @@ async function LogUserOutServer()
     }
 }
 
+async function ClearStorage()
+{
+    sessionStorage.setItem('usertoken', "");
+    localStorage.setItem('usertoken', "");
+}
+
 export default function UserLogOut()
 {
     const router = useRouter();
-    sessionStorage.setItem('usertoken', "");
-    localStorage.setItem('usertoken', "");
-    router.push('/User/login');      
+    useEffect(() => {
+
+        async function checkLoginStatus() {
+            await ClearStorage();
+            router.push('/User/login');
+        }
+      
+        checkLoginStatus(); // Call the function to check login status when the component mounts
+      });
+          
 }

@@ -75,6 +75,12 @@ export default function Create() {
         return;
     }
 
+    function redirectToSignUp()
+    {
+      //router.push('/User/signup')
+      console.log("Clicked");
+    }
+
     return (
     
     <Layout>
@@ -104,11 +110,25 @@ export default function Create() {
             <div className="form-group">
               <input
                 type="submit"
-                value="Create person"
+                value="Log In"
                 className="btn btn-primary"
               />
+              <div className="form-group">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                router.push("/User/signup")
+              }}
+            >
+              Sign Up
+            </button>
             </div>
+            </div>
+            
           </form>
+          
+
         </div>
         </Layout>
         );

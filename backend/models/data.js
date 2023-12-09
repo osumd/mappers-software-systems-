@@ -40,7 +40,7 @@ recordRoutes.route('/api/upload').post((req, res) => {
         const csvFile = files.files[0].filepath;
         msg("Filepath: " + csvFile);
 
-        parseCSVStream(csvFile, fields.user_id);
+        parseCSVStream(csvFile, fields.user_id[0]);
         // if we did not receive files, assume it's just text
         if (files.files === undefined) {
             ParseManualTransaction(fields)
@@ -63,21 +63,25 @@ function ParseManualTransaction(fields) {
 
 async function parseCSVStream(csvStream, user_id) {
     const allTransactions = [];
-
-
-
     // Use csv-parser to parse the CSV stream
     fs.createReadStream(csvStream)
         .pipe(csvParser())
         .on('data', (data) => {
             if (data) {
                 //Process each row of data as needed
+                //console.log("DATA RECOVERED: " + JSON.stringify(data, null, 2));
                 var transValidation = validateTransaction(data);
-                if(transValidation.validationStatus == true)
+                //console.log("transValidation: " + transValidation);
+                if(transValidation != undefined)
                 {
-                   data.user_id = user_id;
-                   allTransactions.push(data);
+                    //console.log("transValidation: " + transValidation.validationStatus);
+                    if(transValidation.validationStatus == true)
+                    {
+                        data.user_id = user_id;
+                        allTransactions.push(data);
+                    }
                 }
+                
                 
             }
         })
@@ -91,9 +95,15 @@ async function parseCSVStream(csvStream, user_id) {
         
 
             try {
-                // Insert multiple documents into the collection
-                const result = await collection.insertMany(allTransactions);
-                console.log(`${result.insertedCount} documents inserted`);
+                
+                console.log("allTransactions: " + JSON.stringify(allTransactions, null, 2));
+                if(allTransactions.length > 0)
+                {
+                    const result = await collection.insertMany(allTransactions, {ordered : false });
+                    //console.log(`${result.insertedCount} documents inserted`);
+                }
+                
+                
             } catch (err) {
                 console.error('Error inserting documents:', err);
             } finally {
@@ -104,43 +114,62 @@ async function parseCSVStream(csvStream, user_id) {
 
 const acceptedRowInsertions =
 {
-    description: { pattern: /"\w"/, required: false},
-    posting_date: { pattern: 0, required: false},
-    amount: { pattern: /0/, required: false},
+    description: { pattern: /[\w\s]+/, required: true},
+    date: { pattern: /\d{1,2}\/\d{1,2}\/\d{4}/, required: true},
+    amount: { pattern: /\d+\.\d+/, required: true},
+    category:  {pattern: /[\w\s]+/, required: true}
 };
 
 const acceptedTagMap = new Map([
-    ['Details', acceptedRowInsertions.description],
-    ['Posting Date', acceptedRowInsertions.posting_date],
-    ['Amount', acceptedRowInsertions.amount]
+    ['description', acceptedRowInsertions.description],
+    ['date', acceptedRowInsertions.date],
+    ['amount', acceptedRowInsertions.amount],
+    ['category', acceptedRowInsertions.category],
 ]);
 
 
 function validateTransaction(transactionJson)
 {
-    const keys = Object.keys(transactionDetails);
+    const keys = Object.keys(transactionJson);
+
+    var   validTransaction = false;
+
+
+
     keys.forEach(key => {
-    const value = transactionDetails[key];
-    console.log(value);
-    var valueInMap = acceptedTagMap.get(key);
-    if(valueInMap == undefined)
-    {
-
-    }else
-    {   
-        var requirementMet = valueInMap.pattern.test(value);
-        if(valueInMap.required == true && requirementMet == false)
+        console.log("The Key: " + key);
+        const value = transactionJson[key];
+        var valueInMap = acceptedTagMap.get(key);
+        console.log("Value in map: " + "{" + valueInMap.pattern + "," + valueInMap.required + "}");
+        
+        console.log("Value: " + value);
+        if(valueInMap == undefined)
         {
-            return {validationStatus: false}
+            if(valueInMap.required == true)
+            {
+                validTransaction = false;
+                return {validationStatus: validTransaction};
+            }
+        }else
+        {   
+            var requirementMet = valueInMap.pattern.test(value);
+            //console.log("requirementMet: " + requirementMet);
+            if(requirementMet == true && valueInMap.required == true)
+            {
+                validTransaction = true;
+            }
+            if(requirementMet == false && valueInMap.required == true)
+            {
+                validTransaction = false;
+                return {validationStatus: validTransaction};
+            }
+ 
         }
-        if(requirementMet)
-        {
-
-        }
-    }
-    console.log(`${key}: ${value}`);
     });
 
+
+
+    return {validationStatus: validTransaction};
 }
 
 module.exports = recordRoutes;

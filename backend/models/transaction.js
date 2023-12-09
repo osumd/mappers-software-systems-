@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 const jwt = require('jsonwebtoken');
 const secretKey = '&^da0X*f)9$$u#2$0c./*DzaD%%3qFS*$%%42x#0!9uVs{029}a131312';
- const dbName = "HighPriv"
+const dbName = "HighPriv"
 const collection = "Transactions"
 
  recordRoutes.route("/allTransactions").get(async function (req, res) {
@@ -102,20 +102,20 @@ recordRoutes.route("/transactions/monthly/:category").get(async function(req, re
   ]).toArray();
   res.json(result)
 })
-  recordRoutes.route("/transactions/:category").get( async function (req, res) {
+recordRoutes.route("/transactions/:category").get( async function (req, res) {
 
-    let db_connect = dbo.getDB(dbName);
-    let myquery = { 
-      Category: req.params.category
-    };
-    let results = await db_connect
-    .collection(collection)
-    .aggregate([
-      { $match: myquery }
-    ]).toArray();
-    res.json(results);
-  });
-  recordRoutes.route("/")
+  let db_connect = dbo.getDB(dbName);
+  let myquery = { 
+    Category: req.params.category
+  };
+  let results = await db_connect
+  .collection(collection)
+  .aggregate([
+    { $match: myquery }
+  ]).toArray();
+  res.json(results);
+});
+recordRoutes.route("/")
 
 
 
@@ -277,5 +277,24 @@ recordRoutes.post("/transaction/insert", async function (req, response) {
 
 });
 
+
+recordRoutes.post("/transaction/search", async function(req,response) {
+  let db_connect = dbo.getDB(dbName);
+  
+  //categories : array of potential categories
+  //amount     : [from-to] or singular
+  //date       : [from-to] or singular
+
+  let myquery = { 
+    Category: req.params.category
+  };
+
+  let results = await db_connect
+  .collection(collection)
+  .aggregate([
+    { $match: myquery }
+  ]).toArray();
+  res.json(results);
+});
  
 module.exports = recordRoutes;

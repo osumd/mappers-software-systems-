@@ -134,8 +134,6 @@ function validateTransaction(transactionJson)
 
     var   validTransaction = false;
 
-
-
     keys.forEach(key => {
         //console.log("The Key: " + key);
         const value = transactionJson[key];

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {Layout} from "../../components/header";
-import VerifyUser from "./verification";
+import UserId from "../User/verification";
 import { useRouter } from 'next/router';
 
 export default function SearchPath() {

@@ -39,7 +39,6 @@ export default function Home() {
         <title>RocketMoney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-  
 {/* ------------------------------------NAV BAR----------------------------------------------------- */}
 
       <div className={styles.nav}>

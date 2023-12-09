@@ -1,4 +1,5 @@
 import BudgetPieChart from './budgetPieChart';
+import { useRouter} from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { UserLoggedIn } from '../User/verification'
 
@@ -15,6 +16,8 @@ export default function BudgetTool(){
     const [editItemId, setEditItemId] = useState(null);
     const [editedAmount, setEditedAmount] = useState('');
 
+    const router = useRouter();
+
     //const user_id = userLoggedIn.user_id;
     const user_id = "12345";
 
@@ -22,6 +25,10 @@ export default function BudgetTool(){
         fetchBudgetItems();
         fetchCategoryList();
     }, [user_id]);
+
+    const navigateToDashboard = () => {
+        router.push('/dashboard');
+    };
 
    const fetchBudgetItems = async () => {
         try {
@@ -133,7 +140,7 @@ export default function BudgetTool(){
     return (
     <div className={styles.container}>
         <div>
-            <BudgetPieChart/>
+            <BudgetPieChart showButton={false}/>
         </div>
         <div> 
             <form onSubmit={handleSubmit}>
@@ -188,6 +195,8 @@ export default function BudgetTool(){
             })}
             </tbody>
             </table>
+
+            <button onClick={navigateToDashboard}>Back</button>
         </div>
 
     </div>

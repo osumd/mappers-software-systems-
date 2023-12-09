@@ -11,7 +11,7 @@ export default function Home() {
 
   function myHomeFunction(choice){
 
-
+    
     //This return can be replaced with returning components
     return (
       <Layout>

@@ -69,20 +69,34 @@ export default function Home() {
         
         
         const form = event.currentTarget
-        const url = new URL(form.action)
+        const url = new URL("http://localhost:5000/api/upload")
         const formData = new FormData(form)
         
         const fetchOptions = {
             mode: 'cors',
-            method: form.method,
+            method: 'post',
             body: formData,
         }
         
         const transaction = {
-            title: formData.get('title'),
-            money: formData.get('money'),
+            title: formData.get('Description'),
+            date: formData.get('PostingDate'),
+            money: formData.get('Amount'),
         }
 
+        try {
+            const response = await fetch(url, fetchOptions)
+    
+            const result = response.status
+            
+            if (result == 200) {
+                alert('Transaction submitted')
+            }
+            else {
+                alert('Transaction failed to submit')
+            }
+
+        } catch (e) { console.log(e) }
 
         msg("Handling the submission process" + transaction.title + "money:" + transaction.money);
         return;
@@ -149,8 +163,8 @@ export default function Home() {
                                         <td>Amount</td>
                                     </tr>
                                     <tr>
-                                        <td><input type='text' name='Description' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required/></td>
-                                        <td><input type='text' name='PostingDate' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required/></td>
+                                        <td><input type='text' name='Description' pattern="^[a-zA-Z0-9\s]*$" title="Enter a valid description" required/></td>
+                                        <td><input type='text' name='PostingDate' pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\d{4}$" title="Enter a valid description" required/></td>
                                         <td><input type="text" name="Amount" pattern="\d+(\.\d{1,2})?" title="Enter a valid amount" required  /></td>
                                     </tr>
                                 </tbody>
@@ -164,3 +178,4 @@ export default function Home() {
         </>
     )
 }
+// (?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+

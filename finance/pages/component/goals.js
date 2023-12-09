@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import {
   Chart as ChartJS,
   LinearScale,
@@ -87,7 +88,8 @@ export function Goal({goal}){
   
   const handleSubmit = async (event) => {
     //prevent page reload
-   
+      event.preventDefault();
+
     //validate input
       if(change){
 

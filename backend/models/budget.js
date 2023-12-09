@@ -28,8 +28,6 @@ recordRoutes.post("/uploadBudgetItem", async function (req,response){
 });
 
 recordRoutes.route("/budgetItems/:userId").get(async function(req,res){
-    const userID = req.params.userId;
-
     try{
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Budget");
@@ -40,6 +38,21 @@ recordRoutes.route("/budgetItems/:userId").get(async function(req,res){
     } catch (error){
         console.error("Error retrieving budget items:", error);
         res.status(500).json({ error: "Failed to retrieve budget items" });
+    }
+});
+
+recordRoutes.route("/budgetItem/:category").get(async function(req,res){
+
+    try{
+        let db_connect = dbo.getDB("HighPriv");
+        const collection = db_connect.collection("Budget");
+
+        const budgetItems = await collection.find({category: req.params.category}).toArray();
+
+        res.status(200).json(budgetItems);
+    } catch (error){
+        console.error("Error retrieving a budget item:", error);
+        res.status(500).json({ error: "Failed to retrieve a budget item " });
     }
 });
 

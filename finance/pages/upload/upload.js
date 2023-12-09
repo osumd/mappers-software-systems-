@@ -71,6 +71,7 @@ export default function Home() {
         const form = event.currentTarget
         const url = new URL("http://localhost:5000/api/upload")
         const formData = new FormData(form)
+        formData.append("user_id", userLoggedIn.user_id)
         
         const fetchOptions = {
             mode: 'cors',

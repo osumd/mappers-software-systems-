@@ -66,7 +66,6 @@ async function ParseManualTransaction(fields) {
     let collection = db_connect.collection("transactions");
     //console.log('CSV stream parsed:', allTransactions);
 
-
     try {
         
         console.log("allTransactions: " + JSON.stringify(fields, null, 2));
@@ -100,8 +99,6 @@ async function parseCSVStream(csvStream, user_id) {
                         allTransactions.push(data);
                     }
                 }
-                
-                
             }
         })
         .on('end', async () => {
@@ -112,7 +109,6 @@ async function parseCSVStream(csvStream, user_id) {
             let collection = db_connect.collection("transactions");
             //console.log('CSV stream parsed:', allTransactions);
         
-
             try {
                 
                 //console.log("allTransactions: " + JSON.stringify(allTransactions, null, 2));
@@ -145,7 +141,6 @@ const acceptedTagMap = new Map([
     ['amount', acceptedRowInsertions.amount],
     ['category', acceptedRowInsertions.category],
 ]);
-
 
 function validateTransaction(transactionJson)
 {
@@ -183,8 +178,6 @@ function validateTransaction(transactionJson)
  
         }
     });
-
-
 
     return {validationStatus: validTransaction};
 }

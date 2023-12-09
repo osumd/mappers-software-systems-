@@ -5,13 +5,16 @@ import React, { useEffect, useState } from 'react';
 import Graph from "./graph";
 import BudgetPieChart from './budget/budgetPieChart';
 import Transactions from './component/transactions';
+import Goals from './component/goals'
+
 
 export default function Home() {
 
 
   function myHomeFunction(choice){
 
-    
+
+
     //This return can be replaced with returning components
     return (
       <Layout>
@@ -20,7 +23,6 @@ export default function Home() {
             Component
           </div>
         </div>
-        
       </Layout>
     )
 
@@ -39,12 +41,13 @@ export default function Home() {
         <title>RocketMoney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+  
 {/* ------------------------------------NAV BAR----------------------------------------------------- */}
 
       <div className={styles.nav}>
 
         <a href=''>Account</a>
-        <a href=''>Componenent</a>
+          <a href='/upload/upload'>Upload</a>
 
         <div className={styles.navcenter}>
           <a href=''>Dashboard</a>
@@ -68,7 +71,7 @@ export default function Home() {
             <Graph/>
             
           </div>
-          <div className={styles.child}>
+          <div className={styles.childs}>
             <Transactions/>
             
           </div>
@@ -86,14 +89,12 @@ export default function Home() {
           <BudgetPieChart/>
 
           </div>
-        </div>
-        
-        <div className={styles.child}>
-          
+
+          <div className={styles.child}>
 
           </div>
-
-
+        </div>
+          
       </div>
 
 

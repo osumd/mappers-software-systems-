@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useRouter} from 'next/router';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function BudgetPieChart(){
+export default function BudgetPieChart({ showButton =true}){
 
   const [budgetData, setBudgetData] = useState([]);
+  const router = useRouter();
   const user_id = "12345";
 
   useEffect(() => {
     fetchBudgetItems();
 });
+
+const navigateToBudgetTool = () => {
+  router.push('budget/budgetTool');
+};
 
   const fetchBudgetItems = async () => {
     try {
@@ -65,6 +71,8 @@ export default function BudgetPieChart(){
         ) : (
           <p>Loading...</p>
         )}
+
+      {showButton && <button onClick={navigateToBudgetTool}>See more</button>}
       </div>
     );
 }

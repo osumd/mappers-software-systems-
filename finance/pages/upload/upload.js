@@ -74,14 +74,29 @@ export default function Home() {
         
         const fetchOptions = {
             mode: 'cors',
-            method: form.method,
+            method: 'post',
             body: formData,
         }
         
         const transaction = {
-            title: formData.get('title'),
-            money: formData.get('money'),
+            title: formData.get('Description'),
+            date: formData.get('PostingDate'),
+            money: formData.get('Amount'),
         }
+
+        try {
+            const response = await fetch(url, fetchOptions)
+    
+            const result = response.status
+            
+            if (result == 200) {
+                alert('Transaction submitted')
+            }
+            else {
+                alert('Transaction failed to submit')
+            }
+
+        } catch (e) { console.log(e) }
 
         msg("Handling the submission process" + transaction.title + "money:" + transaction.money);
         return;

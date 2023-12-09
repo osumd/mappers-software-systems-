@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -28,46 +29,74 @@ ChartJS.register(
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Modal';
 
+function initChart(goal){
 
+
+  if (  goal.amount < goal.threshold){
+
+    return {
+      labels: [goal.name],
+      datasets: [
+          {
+            label: "Current amount",
+            type:'bar',
+              backgroundColor: 'blue',
+              data: [goal.amount]
+  
+          },
+          {
+            label: "Remaining",
+            type:'bar',
+              backgroundColor: 'rgb(240, 240, 240)',
+              data: [goal.threshold-goal.amount]
+          },
+  
+      ]
+    }
+  
+  }
+
+  else{
+    return {
+      labels: [goal.name],
+      datasets: [
+          {
+            label: "Threshold",
+
+            type:'bar',
+              backgroundColor: 'blue',
+              data: [goal.threshold]
+  
+          },
+          {
+            label: "",
+            type:'bar',
+              backgroundColor: 'green',
+              data: [goal.amount - goal.threshold]
+          },
+  
+      ]
+    }
+  
+  }
+}
 export function Goal({goal}){
    const [chart, setChart] = useState(initChart(goal));
+   const [change, setChange] = useState (false);
+   const [factor, setFactor] = useState (1);
 
-   let inc = false;
-   let factor = 1;
-  function initChart(goal){
-    return {
-    labels: [goal.name],
-    datasets: [
-        {
-          type:'bar',
-            backgroundColor: 'rgb(0, 0, 255)',
-            data: [goal.amount]
-
-        },
-        {
-          type:'bar',
-            backgroundColor: 'rgb(240, 240, 240)',
-            data: [goal.threshold-goal.amount]
-        }
-    ]
-  }
-
-  }
   
   const handleSubmit = async (event) => {
     //prevent page reload
       event.preventDefault();
 
-
-      
     //validate input
-      if(inc){
+      if(change){
 
           const budgetItem = {
               id: goal._id,
-              change: inc
+              change: change * factor
           };
-          console.log(budgetItem);
       
           try{
               const response = await fetch("http://localhost:5000/goal/transfer", {
@@ -80,9 +109,8 @@ export function Goal({goal}){
 
               if (response.ok){
                 const updated = await response.json();
-                //console.log(upda)
+                console.log(updated)
                 setChart(initChart(updated))
-                inc = false;
                  
               } else {
                   console.error("Failed to upload budget item");
@@ -90,6 +118,8 @@ export function Goal({goal}){
           } catch (error){
               console.error("Error while uploading budget item: ", error);
           }
+          const element = document.getElementById('transfer');
+          element.value = ''
       }
   
     }
@@ -98,22 +128,46 @@ export function Goal({goal}){
     return (
         <>
         <h3>{goal.name}</h3>
-        <p>{goal.due_date}</p>
+        <p>Deadline: {goal.due_date}</p>
         <span style={{float: 'right'}}>
-        <select onChange={(e)=> factor=e.target.value}>
+        <select onChange={(e)=> setFactor(e.target.value)}>
           <option value={1}>Transfer in </option>
           <option value={-1}>Transfer out</option>
         </select>
         
-        <input type="number" onChange={(e) => inc = e.target.value}></input>
+        <input id="transfer" type="number" onChange={(e) => setChange(e.target.value)}></input>
         <button onClick={handleSubmit}>+</button>
         </span>
         <div>
-        <Chart type='bar' 
+        <Chart type='bar'style={{position: 'relative'}} 
         data={chart} 
-        options={{
-          maintainAspectRatio	: false,
+        options={
+          
+          { 
+            tooltips: {
+              enabled: true,
+              mode: 'single',
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  var text = tooltipItems.datasetIndex === 0 ? 'some text 1' : 'some text 2'
+                  return tooltipItems.yLabel + ' ' + text;
+                }
+              }
+            },
+            maintainAspectRatio:false,
+            responsive: false,
+        
           plugins: {
+            tooltips:{
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  var text = tooltipItems.datasetIndex === 0 ? 'some text 1' : 'some text 2'
+                  return tooltipItems.yLabel + ' ' + text;
+                }
+              }
+            },
+
+          
             legend:{display: false}
           },
           barThickness: 10,
@@ -143,6 +197,7 @@ export function Goal({goal}){
 
 }
 export default function Goals(){
+  
   const [add, setAdd] = useState(false);
   const handleClose = () => setAdd(false);
   const handleAdd = () => setAdd(true);
@@ -159,15 +214,14 @@ export default function Goals(){
           setList(data)
         })
         .catch(error=> console.error(error))
-    }, []);
+    }, [add]);
     const handleSubmit = async (event) => {
       //prevent page reload
         event.preventDefault();
   
       //validate input
         if(newGoal.name && newGoal.threshold){
-  
-
+          setAdd(false);
         
             try{
                 const response = await fetch("http://localhost:5000/goal", {
@@ -214,7 +268,7 @@ export default function Goals(){
                 <input required type="number" placeholder="$1000.00" onChange={(e) => newGoal.threshold=e.target.value}/>
                 </div>
                 <div>
-                <label>Current savings</label>
+                <label>Current amount</label>
                 <input type="number"  value={0} onChange={(e) => newGoal.threshold=e.target.value}/>
                 </div>
                 <div>

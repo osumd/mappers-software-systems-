@@ -88,9 +88,10 @@ export default function Home() {
           </div>
         </div>
         
+        <div className={styles.child}>
+          
 
-          {/* <xyz props={}/>
-          {xyz()} */}
+          </div>
 
 
       </div>

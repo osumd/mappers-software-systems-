@@ -28,24 +28,28 @@ recordRoutes.route('/api/upload').post((req, res) => {
     
     
     // calling parse() will parse the form and extract the fields and files into objects similar to arrays
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
         if (err) {
             next(err);
             return;
         }
 
-        msg(fields)
+        //msg(fields)
         // the variable is called files, and the name of the form in the html is also files, so we get this abomination of 'files.files'
-        msg(files.files[0])
-        const csvFile = files.files[0].filepath;
-        msg("Filepath: " + csvFile);
+        //msg(files.files[0])
+        //const csvFile = files.files[0].filepath;
+        //msg("Filepath: " + csvFile);
 
-        parseCSVStream(csvFile, fields.user_id[0]);
+        //parseCSVStream(csvFile, fields.user_id[0]);
+
         // if we did not receive files, assume it's just text
         if (files.files === undefined) {
-            ParseManualTransaction(fields)
-        } else {
-            
+            await ParseManualTransaction(fields)
+        } else if (files.files !== undefined) {
+            const csvFile = files.files[0].filepath;
+            msg("Filepath: " + csvFile);
+
+            await parseCSVStream(csvFile, fields.user_id[0]);
         }
 
         res.status(200).send();
@@ -54,12 +58,27 @@ recordRoutes.route('/api/upload').post((req, res) => {
     // res.status(100).send();
 })
 
-function ParseManualTransaction(fields) {
-    //console.log({ fields }) // example: { title: [ 'title' ], date: [ 'date' ], money: [ 'money' ], category: [ '' ] }
+async function ParseManualTransaction(fields) {
+    // All rows have been processed
+    let db_connect = dbo.getDB("HighPriv");
+    //https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
+    //db.collection.updateMany(doc, doc, {upsert:true}) to prevent duplications
+    let collection = db_connect.collection("transactions");
+    //console.log('CSV stream parsed:', allTransactions);
+
+
+    try {
+        
+        console.log("allTransactions: " + JSON.stringify(fields, null, 2));
+        const result = await collection.insertOne(fields, {ordered : false });
+        console.log(`db upload result: ${result}`)
+        
+    } catch (err) {
+        console.error('Error inserting transaction:', err);
+    } finally {
+        // Close the MongoDB connection
+    }
 }
-
-
-
 
 async function parseCSVStream(csvStream, user_id) {
     const allTransactions = [];

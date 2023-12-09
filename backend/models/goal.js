@@ -57,7 +57,7 @@ recordRoutes.route("/goals").get(async function(req,res){
         const collection = db_connect.collection("Goals");
 
         const budgetItems = await collection.find({user_id: user_id}).toArray();
-
+        
         res.status(200).json(budgetItems);
     } catch (error){
         console.error("Error retrieving budget items:", error);

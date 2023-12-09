@@ -1,9 +1,9 @@
 import BudgetPieChart from './budgetPieChart';
 import { useRouter} from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { UserLoggedIn } from '../User/verification'
+import { UserId } from '../User/verification'
 
-import styles from '../../styles/Home.module.css'
+import styles from '../../styles/component/component.module.css';
 
 
 
@@ -12,6 +12,7 @@ export default function BudgetTool(){
     const [amount, setAmount] = useState('');
     const [budgetData, setBudgetData] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [user_id, setUserId] = useState('');
 
     const [editItemId, setEditItemId] = useState(null);
     const [editedAmount, setEditedAmount] = useState('');
@@ -19,11 +20,12 @@ export default function BudgetTool(){
     const router = useRouter();
 
     //const user_id = userLoggedIn.user_id;
-    const user_id = "12345";
+    //const user_id = "12345";
 
     useEffect(() => {
         fetchBudgetItems();
         fetchCategoryList();
+        setUserId(UserId().user_id);
     }, [user_id]);
 
     const navigateToDashboard = () => {
@@ -138,13 +140,13 @@ export default function BudgetTool(){
     }
 
     return (
-    <div className={styles.container}>
+    <div className="container">
         <div>
             <BudgetPieChart showButton={false}/>
         </div>
         <div> 
-            <form onSubmit={handleSubmit}>
-                {/*<input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)}/>*/}
+            <form  onSubmit={handleSubmit}>
+                <div className="container">
                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                         <option value="">Select a category</option>
                         {categoryList.map((categoryItem, index) => (
@@ -155,10 +157,11 @@ export default function BudgetTool(){
                 </select>
                 <input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
                 <button type="submit">Add Budget</button>
+                </div>
             </form>
         </div>
         <div>
-            <table>
+            <table className={styles.table}>
                 <thead>
                 <tr>
                     <th>Category</th>
@@ -196,9 +199,44 @@ export default function BudgetTool(){
             </tbody>
             </table>
 
-            <button onClick={navigateToDashboard}>Back</button>
+            
         </div>
 
+        <div>
+            <button onClick={navigateToDashboard}>Back To Dashboard</button>
+        </div>
+
+        <style jsx>{`
+
+        table {
+            border-collapse: collapse;
+        }
+
+        tr,th{
+            border: 1px solid black;
+            padding: 5px; 
+        }
+
+        th {
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        
+        tr:nth-child(odd){
+            background-color: #f2f2f2;
+        }
+        
+        tr:nth-child(even){
+            background-color: #ffffff;
+        }
+        
+      `}</style>
     </div>
     );
 }

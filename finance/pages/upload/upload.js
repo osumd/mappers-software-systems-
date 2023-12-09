@@ -67,43 +67,30 @@ export default function Home() {
     async function handleManualSubmit(event) {
         event.preventDefault()
         
-        
         const form = event.currentTarget
-        const url = new URL(form.action)
+        const url = new URL("http://localhost:5000/api/upload")
         const formData = new FormData(form)
+        formData.append('user_id', userLoggedIn.user_id);
         
         const fetchOptions = {
             mode: 'cors',
-            method: form.method,
+            method: 'post',
             body: formData,
         }
         
-        const transaction = {
-            title: formData.get('title'),
-            money: formData.get('money'),
-        }
+        try {
+            const response = await fetch(url, fetchOptions)
+    
+            const result = response.status
+            
+            if (result == 200) {
+                alert('Transaction submitted')
+            }
+            else {
+                alert('Transaction failed to submit')
+            }
 
-        msg("Handling the submission process" + transaction.title + "money:" + transaction.money);
-        return;
-
-        if (formData.get('title') != '' && formData.get('money') != '') {
-            try {
-                const response = await fetch(url, fetchOptions)
-
-                const result = response.status
-                
-                if (result == 200) {
-                    alert('Transaction submitted')
-                }
-                else {
-                    alert('Transaction failed to submit, please try again later')
-                }
-
-            } catch (e) { console.log(e) }
-        }
-        else {
-            alert("Title and monetary value may not be empty")
-        }
+        } catch (e) { console.log(e) }
     }
 
     useEffect(() => {

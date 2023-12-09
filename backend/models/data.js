@@ -26,21 +26,12 @@ recordRoutes.route('/api/upload').post((req, res) => {
 
     form.maxFileSize = 50*1024*1024 // 5MB, any CSV bigger than this is a gigantic file that we don't want to parse
     
-    
     // calling parse() will parse the form and extract the fields and files into objects similar to arrays
     form.parse(req, async (err, fields, files) => {
         if (err) {
             next(err);
             return;
         }
-
-        //msg(fields)
-        // the variable is called files, and the name of the form in the html is also files, so we get this abomination of 'files.files'
-        //msg(files.files[0])
-        //const csvFile = files.files[0].filepath;
-        //msg("Filepath: " + csvFile);
-
-        //parseCSVStream(csvFile, fields.user_id[0]);
 
         // if we did not receive files, assume it's just text
         if (files.files === undefined) {
@@ -54,8 +45,6 @@ recordRoutes.route('/api/upload').post((req, res) => {
 
         res.status(200).send();
     });
-
-    // res.status(100).send();
 })
 
 async function ParseManualTransaction(fields) {
@@ -67,15 +56,9 @@ async function ParseManualTransaction(fields) {
     //console.log('CSV stream parsed:', allTransactions);
 
     try {
-        
-        console.log("allTransactions: " + JSON.stringify(fields, null, 2));
-        const result = await collection.insertOne(fields, {ordered : false });
-        console.log(`db upload result: ${result}`)
-        
+        await collection.insertOne(fields, {ordered : false });
     } catch (err) {
         console.error('Error inserting transaction:', err);
-    } finally {
-        // Close the MongoDB connection
     }
 }
 
@@ -121,8 +104,6 @@ async function parseCSVStream(csvStream, user_id) {
                 
             } catch (err) {
                 //console.error('Error inserting documents:', err);
-            } finally {
-                // Close the MongoDB connection
             }
         });
 }
@@ -146,7 +127,7 @@ function validateTransaction(transactionJson)
 {
     const keys = Object.keys(transactionJson);
 
-    var   validTransaction = false;
+    var validTransaction = false;
 
     keys.forEach(key => {
         //console.log("The Key: " + key);

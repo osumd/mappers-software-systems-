@@ -39,14 +39,14 @@ export function Goal({goal}){
     datasets: [
         {
           type:'bar',
-            backgroundColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgb(0, 0, 255)',
             data: [goal.amount]
 
         },
         {
           type:'bar',
-            backgroundColor: 'rgb(0, 162, 235)',
-            data: [goal.threshold]
+            backgroundColor: 'rgb(240, 240, 240)',
+            data: [goal.threshold-goal.amount]
         }
     ]
   }
@@ -76,8 +76,9 @@ export function Goal({goal}){
               });
 
               if (response.ok){
-                console.log(response);
-                setChart(initChart(goal))
+                const updated = await response.json();
+                //console.log(upda)
+                setChart(initChart(updated))
                 inc = false;
                  
               } else {
@@ -95,26 +96,42 @@ export function Goal({goal}){
         <>
         <h3>{goal.name}</h3>
         <p>{goal.due_date}</p>
+        <span style={{float: 'right'}}>
         <select onChange={(e)=> factor=e.target.value}>
           <option value={1}>Transfer in </option>
           <option value={-1}>Transfer out</option>
         </select>
+        
         <input type="number" onChange={(e) => inc = e.target.value}></input>
         <button onClick={handleSubmit}>+</button>
-        <Chart type='bar'
+        </span>
+        <div>
+        <Chart type='bar' 
         data={chart} 
         options={{
+          maintainAspectRatio	: false,
+          plugins: {
+            legend:{display: false}
+          },
+          barThickness: 10,
           indexAxis: 'y',
+          layout: {
+            padding: -1
+        },
           scales: {
+
             x: {
-                stacked: true
+                stacked: true,
+                display: false
             },
             y: {
+            clip:false,
+              display: false,
                 stacked: true
-            },
-            xAxis:{display:false},
-            yAxis:{display:false}
+            }
+
         }}}/>
+        </div>
 
         </>
     )

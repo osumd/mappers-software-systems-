@@ -36,7 +36,7 @@ recordRoutes.post("/goal/transfer", async function (req,response){
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Goals");
         console.log(change);
-       const item= await collection.updateOne(
+       const item= await collection.findOneAndUpdate(
             {"_id": new BSON.ObjectId(req.body.id)},
             {$inc : {"amount": change}}
         )

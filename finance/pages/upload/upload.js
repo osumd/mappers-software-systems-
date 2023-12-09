@@ -169,8 +169,6 @@ export default function Home() {
                                     </tr>
                                     <tr>
                                         <td>Amount</td>
-                                        
-                                        
                                         <td><input type="text" name="Amount" pattern="\d+(\.\d{1,2})?" title="Enter a valid amount" required  /></td>
                                     </tr>
                                 </tbody>

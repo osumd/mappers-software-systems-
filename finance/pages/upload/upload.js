@@ -161,11 +161,11 @@ export default function Home() {
                                 <tbody>
                                     <tr>
                                         <td>Description</td>
-                                        <td><input type='text' name='Description' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required /></td>
+                                        <td><input type='text' name='Description' pattern="^[a-zA-Z0-9\s]*$" title="Enter a valid description" required /></td>
                                     </tr>
                                     <tr>
                                         <td>Posting Date</td>
-                                        <td><input type='text' name='PostingDate' pattern="(?:([A-Z]+)|([a-z]+)|([\d]+))|([\s]+)+" title="Enter a valid description" required /></td>
+                                        <td><input type='text' name='PostingDate' pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\d{4}$" title="Enter a valid description" required /></td>
                                     </tr>
                                     <tr>
                                         <td>Amount</td>

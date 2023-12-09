@@ -83,7 +83,6 @@ export default function Home() {
             money: formData.get('money'),
         }
 
-
         msg("Handling the submission process" + transaction.title + "money:" + transaction.money);
         return;
 

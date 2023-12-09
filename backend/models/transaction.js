@@ -280,14 +280,58 @@ recordRoutes.post("/transaction/insert", async function (req, response) {
 
 recordRoutes.post("/transaction/search", async function(req,response) {
   let db_connect = dbo.getDB(dbName);
-  
+
   //categories : array of potential categories
   //amount     : [from-to] or singular
   //date       : [from-to] or singular
 
+  const matchCriteria = {
+    $match: {
+      $and: [
+        categories ? { category: { $in: categories } } : {},
+        amount ? { amount: { $gte: amount[0], $lte: amount[1] } } : {},
+        date ? { date: { $gte: date[0], $lte: date[1] } } : {}
+      ]
+    }
+  };
+
   let myquery = { 
     Category: req.params.category
   };
+
+  const aggregationPipeline = [
+    matchCriteria,
+    {
+      $group: {
+        _id: {
+          category: '$category',
+          amount: {
+            $switch: {
+              branches: [
+                { case: { $and: [{ $gte: ['$amount', 0] }, { $lte: ['$amount', 50] }] }, then: 'Range_1' },
+                { case: { $and: [{ $gt: ['$amount', 50] }, { $lte: ['$amount', 100] }] }, then: 'Range_2' },
+                // Add more branches based on your amount ranges
+              ],
+              default: 'Range_Unknown'
+            }
+          },
+          date: '$date',
+        },
+        transaction_count: { $sum: 1 },
+        total_amount: { $sum: '$amount' }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        category: '$_id.category',
+        amount_range: '$_id.amount',
+        date: '$_id.date',
+        transaction_count: 1,
+        total_amount: 1
+      }
+    }
+  ];
 
   let results = await db_connect
   .collection(collection)

@@ -58,6 +58,26 @@ export default async function VerifyNewUserCredentials(UserCredentials)
     return {passed: (PasswordTest & UsernameTest), message: "Error credentials not valid. Please enter a valid password atleast 8 characters, include atleast one uppercase, one number and one symbol."};
 }
 
+export function UserId()
+{
+    var usertoken = sessionStorage.getItem('user_id');
+    const localusertoken = localStorage.getItem('user_id');
+    
+    if(localusertoken != "" && localusertoken != null)
+    {
+        usertoken = localusertoken;
+    }
+    
+
+    if(usertoken == "" || usertoken == null)
+    {
+        msg("User token was empty.");
+        return {LoginStatus: false, user_id:0};
+    }
+
+    return {LoginStatus: true, user_id: usertoken};
+}
+
 export async function UserLoggedIn()
 {
 
@@ -112,10 +132,14 @@ export async function UserLoggedIn()
             msg(data);
             if(data != null)
             {
+                sessionStorage.setItem("user_id", data.user_id);
+                localStorage.setItem("user_id", data.user_id);
                 return {LoginStatus: data.validation, user_id: data.user_id};
             }
             else
             {
+                sessionStorage.setItem("user_id", "");
+                localStorage.setItem("user_id", "");
                 //sessionStorage.setItem('usertoken',null);
                 return {LoginStatus: false, user_id:0};  
             }    
@@ -123,6 +147,7 @@ export async function UserLoggedIn()
         {
             msg("Error:" + response.status);
             //sessionStorage.setItem('usertoken',null);
+            
             return {LoginStatus: false, user_id: 0};
         }
 

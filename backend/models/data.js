@@ -115,7 +115,7 @@ async function parseCSVStream(csvStream, user_id) {
 
             try {
                 
-                console.log("allTransactions: " + JSON.stringify(allTransactions, null, 2));
+                //console.log("allTransactions: " + JSON.stringify(allTransactions, null, 2));
                 if(allTransactions.length > 0)
                 {
                     const result = await collection.insertMany(allTransactions, {ordered : false });
@@ -124,7 +124,7 @@ async function parseCSVStream(csvStream, user_id) {
                 
                 
             } catch (err) {
-                console.error('Error inserting documents:', err);
+                //console.error('Error inserting documents:', err);
             } finally {
                 // Close the MongoDB connection
             }
@@ -156,12 +156,12 @@ function validateTransaction(transactionJson)
 
 
     keys.forEach(key => {
-        console.log("The Key: " + key);
+        //console.log("The Key: " + key);
         const value = transactionJson[key];
         var valueInMap = acceptedTagMap.get(key);
-        console.log("Value in map: " + "{" + valueInMap.pattern + "," + valueInMap.required + "}");
+        //console.log("Value in map: " + "{" + valueInMap.pattern + "," + valueInMap.required + "}");
         
-        console.log("Value: " + value);
+        //console.log("Value: " + value);
         if(valueInMap == undefined)
         {
             if(valueInMap.required == true)

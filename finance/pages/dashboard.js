@@ -5,12 +5,13 @@ import React, { useEffect, useState } from 'react';
 import Graph from "./graph";
 import BudgetPieChart from './budget/budgetPieChart';
 import Transactions from './component/transactions';
+
 export default function Home() {
 
 
   function myHomeFunction(choice){
 
-
+    
     //This return can be replaced with returning components
     return (
       <Layout>

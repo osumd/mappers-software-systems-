@@ -28,30 +28,29 @@
 }
 
 .topHalf {
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
     flex: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 50vh;
 }
 
 .bottomHalf {
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
     flex: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 50vh;
 }
 
 
-/* .child {
-  flex: 1;
-  background-color: purple;
-  margin: 0.5%;
-  padding: 0.5%;
-} */
+
+
+.childs {
+    overflow: scroll;
+}
 
 .comp1 {
     text-align: center;
@@ -151,6 +150,31 @@
         left: 0;
         transform: none;
     }
+}
+
+.uploadbox {
+    overflow: visible;
+    -webkit-overflow-scrolling: touch;
+    flex: auto;
+    height: 50vh;
+}
+
+.uploadbox button {
+    text-align: center;
+        text-decoration: none;
+        padding: 1.5%;
+        color: black;
+        border-radius: 10px;
+        background-color: white;
+}
+
+.uploadbox button:hover {
+    background-color: black;
+        color: white;
+}
+
+.input {
+    
 }
 
 .container {

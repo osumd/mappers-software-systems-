@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Graph from "./graph";
 import BudgetPieChart from './budget/budgetPieChart';
 import Transactions from './component/transactions';
-
+import Goal from './component/goals'
 export default function Home() {
 
 
@@ -87,13 +87,13 @@ export default function Home() {
           <BudgetPieChart/>
 
           </div>
-        </div>
+  
         
         <div className={styles.child}>
           
-
+          <Goal/>
           </div>
-
+          </div>
 
       </div>
 

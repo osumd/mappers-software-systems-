@@ -80,6 +80,7 @@ function initChart(goal){
   
   }
 }
+
 export function Goal({goal}){
    const [chart, setChart] = useState(initChart(goal));
    const [change, setChange] = useState (false);
@@ -196,7 +197,8 @@ export function Goal({goal}){
 
 
 }
-export default function Goals(){
+
+export default function Goals({viewAll}){
   
   const [add, setAdd] = useState(false);
   const handleClose = () => setAdd(false);
@@ -246,6 +248,14 @@ export default function Goals(){
             }
         }
     
+      }
+      if (!view){
+        return (
+          <>
+          <button onClick=></button>
+          <Goal goal={list[0]}/>
+          </>
+        )
       }
   return (
     <>

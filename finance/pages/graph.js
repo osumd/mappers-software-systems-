@@ -62,7 +62,7 @@ return value
 
 export default function Graph({
   transactions}) {
-  const [category, setCategory] = useState('Restaurants')
+  const [category, setCategory] = useState('Merchandise')
   const [user_id, setUserId] = useState('');
   const [budget, setBudget] = useState({});
 

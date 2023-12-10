@@ -6,6 +6,7 @@ import {Router} from 'next';
 import { UserLoggedIn } from '../User/verification';
 import { useRouter } from 'next/router';
 
+
 export default function Home() {
 
     var router = useRouter();

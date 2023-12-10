@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import Goal from './Goal';
 
 import { UserId } from '../User/verification';
-export default function DashboardGoal(){
-  const user_id = UserId().user_id;
+export default function DashboardGoal({user_id}){
+
   const [list, setList] = useState([])
  const router = useRouter();
   useEffect(() => {
-    fetch(`http://localhost:5000/goals/${user_id}`)
+    fetch(`http://localhost:5000/goals/${user_id? user_id: 0}`)
       .then((res) => {
         return res.json();
       })

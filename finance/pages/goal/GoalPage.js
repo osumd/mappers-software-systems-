@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Button from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
-import { UserId } from "../User/verification";
+//import { UserId } from "../User/verification";
 import AddGoal from "./AddGoal";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Goal from "./Goal";
@@ -12,8 +12,8 @@ import styles from "../../styles/Home.module.css";
 import { Footer, Nav } from "../dashboard";
 
 export default function Goals() {
-  const user_id = UserId().user_id;
- // const user_id = 1;
+  //const user_id = UserId().user_id;
+  const user_id = 0;
   const [add, setAdd] = useState(false);
   const handleAdd = () => setAdd(true);
   const [view, setView] = useState(true);

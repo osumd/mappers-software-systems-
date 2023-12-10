@@ -12,6 +12,7 @@ import {
   BarController,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
+import { UserId } from './User/verification'
 
 const filepath  = "../data/statement.csv"
 
@@ -27,7 +28,7 @@ ChartJS.register(
   BarController
 );
 const budget_amount= [50, 50, 0, 300 , 200, 200, 50]
-var budget={}
+//var budget={}
 
 //const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November','December'];
 
@@ -53,7 +54,6 @@ useEffect(() => {
     .then((data) => {
       setValue(data)
       return value;
-      console.log(data)
     })
     .catch(error=> console.error(error))
 }, [])
@@ -62,23 +62,29 @@ return value
 
 export default function Graph({
   transactions}) {
-  const [category, setCategory] = useState('Restaurants')
-  const [budgetData, setBudgetData] = useState([]);
+  const [category, setCategory] = useState('Merchandise')
+  const [user_id, setUserId] = useState('');
+  const [budget, setBudget] = useState({});
 
   const [chart, setChart] = useState(initChart([{_id: 0, spending: 0}], false))
 
-  const user_id = "12345"
-
   let categorySelector = fetcher("/categories")
+
+  useEffect(() => {
+    fetchBudgetItems();
+  }, [user_id]);
 
   const fetchBudgetItems = async () => {
      try {
          const response = await fetch(`http://localhost:5000/budgetItems/${user_id}`);
          if (response.ok){
             const data = await response.json();
+            const updatedBudget = {};
             for (let i = 0; i < data.length; i++){
-              budget[data[i].category] = data[i].amount;
+              updatedBudget[data[i].category] = data[i].amount;
             }
+            setBudget(updatedBudget);
+            console.log(budget);
          } else {
             console.error("Failed to fetch budget items");
          }
@@ -95,16 +101,16 @@ export default function Graph({
         return res.json();
       })
       .then((data) => {
-  
-        console.log(data)
-        setChart(initChart(data, budget))
-        fetchBudgetItems();
+
+        setUserId(UserId().user_id);
+        setChart(initChart(data, budget));
       })
       .catch(error=> console.error(error))
 
-  }, [category]);
+  }, [category, budget]);
 
   function initChart(spending, budget){
+    console.log(budget[category]);
     return {
       labels: spending.map(month=>month._id),
       datasets: [
@@ -118,7 +124,7 @@ export default function Graph({
           type: 'line',
           label: 'Budget Threshold',
           data: spending.map(month=> {
-            if (budget[category]){
+            if (budget && budget[category]){
               return budget[category]
             }
             else{

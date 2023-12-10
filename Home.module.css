@@ -152,31 +152,6 @@
     }
 }
 
-.uploadbox {
-    overflow: visible;
-    -webkit-overflow-scrolling: touch;
-    flex: auto;
-    height: 50vh;
-}
-
-.uploadbox button {
-    text-align: center;
-        text-decoration: none;
-        padding: 1.5%;
-        color: black;
-        border-radius: 10px;
-        background-color: white;
-}
-
-.uploadbox button:hover {
-    background-color: black;
-        color: white;
-}
-
-.input {
-    
-}
-
 .container {
     max-height: 100vh;
     min-height: 100vh;

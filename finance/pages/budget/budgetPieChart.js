@@ -70,10 +70,10 @@ const navigateToBudgetTool = () => {
     return(
       <div>
         <h2>Budget</h2>
-        {budgetData && Array.isArray(budgetData) ? (
+        {budgetData && Array.isArray(budgetData) && budgetData.length > 0  ? (
           <Pie data={data}></Pie>
         ) : (
-          <p>No data...</p>
+          <p>No data to display...</p>
         )}
 
       {showButton && <button onClick={navigateToBudgetTool}>See more</button>}

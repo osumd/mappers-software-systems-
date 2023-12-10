@@ -268,3 +268,33 @@
         flex-direction: column;
     }
 }
+.page{
+    display: block;
+    padding:1% 10%
+    
+
+      
+}
+.flex{
+    display:flex;
+}
+.block{
+    display:block;
+}
+.row {
+    padding: 2% 0;
+}
+.right{
+    margin-left:auto;
+}
+
+  
+
+
+  .input{
+width:auto;
+    padding: 1%;
+    margin: 2%;
+    width: 100%;
+
+  }

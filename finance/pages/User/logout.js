@@ -75,6 +75,8 @@ async function ClearStorage()
 {
     sessionStorage.setItem('usertoken', "");
     localStorage.setItem('usertoken', "");
+    sessionStorage.setItem('user_id', "");
+    localStorage.setItem('user_id', "");
 }
 
 export default function UserLogOut()

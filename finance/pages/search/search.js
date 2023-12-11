@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {Layout} from "../../components/header";
-import UserId from "../User/verification";
+import {UserId} from "../User/verification";
 import { useRouter } from 'next/router';
 
+import styles from "../../styles/User.module.css";
 
 var SearchError = "";
+var user_id = "";
 
 export function TransactionsTable({ transactions }) {
 
@@ -41,7 +43,25 @@ export function TransactionsTable({ transactions }) {
 
 export default function SearchPath() {
 
+
+
     const router = useRouter();
+
+    useEffect(() => {
+      async function checkLoginStatus() {
+          const userLoggedIn = await UserId();
+
+          if(userLoggedIn.LoginStatus == false)
+          {
+              router.push('/');
+          }else
+          {
+            user_id = userLoggedIn.user_id;
+          }
+      }
+    
+      checkLoginStatus(); // Call the function to check login status when the component mounts
+    });
 
     const [form, setForm] = useState({
         keywords: "",
@@ -137,6 +157,7 @@ export default function SearchPath() {
     async function fetchTransactions(query)
     {
       var debugMode = true;
+      query.user_id = user_id;
 
       function msg(message)
       {
@@ -312,6 +333,7 @@ export default function SearchPath() {
                 value={form.categories.includes('Restaurants')}
                 onChange={() => handleCheckboxChange('Restaurants')}
               />
+              <br></br>
               <label htmlFor="Payments and Credits">Payments and Credits: </label>
               <input
                 type="checkbox"
@@ -345,7 +367,7 @@ export default function SearchPath() {
                 value={form.categories.includes('Travel/ Entertainment')}
                 onChange={() => handleCheckboxChange('Travel/ Entertainment')}
               />
-
+              <br></br>
               <label htmlFor="Services">Services: </label>
               <input
                 type="checkbox"

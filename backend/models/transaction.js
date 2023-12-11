@@ -281,7 +281,6 @@ recordRoutes.post("/transaction/insert", async function (req, response) {
 recordRoutes.post("/transaction/search", async function(req,response) {
 
   const query = req.body;
-
   // const matchCriteria = {
   //   $match: {
   //     $and: [
@@ -309,6 +308,7 @@ recordRoutes.post("/transaction/search", async function(req,response) {
               { amount: { $gte: parseFloat(query.amount_from)  , $lte: parseFloat(query.amount_to) } },
               query.date_from != '' ? { date: { $gte: new Date(query.date_from), $lte: new Date(query.date_to) } } : {},
               query.keywords.trim() !== '' ? { description: { $regex: query.keywords} } : {},
+              { user_id: query.user_id}
       ]
     }
   };

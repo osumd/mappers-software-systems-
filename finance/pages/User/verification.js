@@ -73,7 +73,7 @@ export function UserId()
 
     if(usertoken == "" || usertoken == null)
     {
-        msg("User token was empty.");
+        //msg("User token was empty.");
         return {LoginStatus: false, user_id:0};
     }
 

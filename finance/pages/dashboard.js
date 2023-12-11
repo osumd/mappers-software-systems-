@@ -49,7 +49,6 @@ export default function Home() {
 
   // var homeComponents = [myHomeFunction, xyz];
 
-  // TODO: Move <style> tag below into CSS file
   // TODO: when different pages have been created, update the navigation links
   return (
     <Layout>

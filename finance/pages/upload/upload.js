@@ -114,19 +114,18 @@ export default function Home() {
             </Head>
             <main className={styles.container}>
 
-                <div className={styles.nav}>
+            <div className={styles.nav}>
+                <a href="/goal/DashboardGoal">Goals</a>
+                <a href="/upload/upload">Upload</a>
 
-                    <a href=''>Account</a>
-                    <a href='/upload/upload'>Upload</a>
-
-                    <div className={styles.navcenter}>
-                        <a href='../dashboard'>Dashboard</a>
-                    </div>
-                    <div className={styles.navright}>
-                        <a href=''>Search</a>
-                        <a href=''>Componenent</a>
-                    </div>
+                <div className={styles.navcenter}>
+                    <a href="/dashboard">Dashboard</a>
                 </div>
+                <div className={styles.navright}>
+                    <a href="/User/logout">Logout</a>
+                    <a href="">Search</a>
+                </div>
+            </div>
 
 
 

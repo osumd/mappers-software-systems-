@@ -51,10 +51,13 @@ recordRoutes.route('/api/upload').post((req, res) => {
 async function ParseManualTransaction(fields) {
     let db_connect = dbo.getDB("HighPriv")
     let collection = db_connect.collection("transactions")
+
     let new_fields = {}
     new_fields.description = fields.Description[0]
-    new_fields.date = fields.PostingDate[0]
-    new_fields.amount = fields.Amount[0]
+    const [month, day, year] = fields.PostingDate.split('/').map(Number);
+    const dateObject = new Date(year, month - 1, day);
+    new_fields.date = dateObject;
+    new_fields.amount = parseFloat(fields.Amount[0]);
     new_fields.user_id = fields.user_id[0]
 
     try {

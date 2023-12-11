@@ -4,12 +4,25 @@ import { useRouter } from 'next/router'
 import Goal from './Goal';
 
 import { UserId } from '../User/verification';
-export default function DashboardGoal({user_id}){
+export default function DashboardGoal(){
+  const [user_id, setUserId] = useState(0);
+  useEffect(() => {
 
+    function checkLoginStatus() {
+        var userLoggedIn = UserId();
+        setUserId(userLoggedIn.user_id);
+        if(userLoggedIn.LoginStatus == false)
+        {
+            router.push('/');
+        }
+    }
+  
+    checkLoginStatus(); // Call the function to check login status when the component mounts
+  })
   const [list, setList] = useState([])
  const router = useRouter();
   useEffect(() => {
-    fetch(`http://localhost:5000/goals/${user_id? user_id: 0}`)
+    fetch(`http://localhost:5000/active_goals/${user_id}`)
       .then((res) => {
         return res.json();
       })

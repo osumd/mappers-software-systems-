@@ -122,11 +122,8 @@ export default function Goal({ goal , view, setView}) {
           else{
             setChart(initChart(updated));
           }
-  
-      
-         
 
-          const element = document.getElementById("transfer");
+          const element = document.getElementById(goal._id);
           element.value = "";
         })
         .catch((error)=> alert(error))
@@ -181,7 +178,7 @@ export default function Goal({ goal , view, setView}) {
         </select>
 
         <input required
-          id="transfer"  type="number" placeholder="$0.00"
+          id={goal._id}  type="number" placeholder="$0.00"
           
           onChange={(e) => setChange(e.target.value)}
         ></input>

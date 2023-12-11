@@ -5,7 +5,7 @@ const user_id = 0;
 const { BSON, EJSON, ObjectId } = require('bson');
 
 recordRoutes.post("/addGoal/:user_id", async function (req,response){
-    const user_id= parseInt(req.params.user_id);
+    const user_id= req.params.user_id;
     const {name, threshold, amount, due_date} = req.body
 
     try{
@@ -15,7 +15,7 @@ recordRoutes.post("/addGoal/:user_id", async function (req,response){
         const goalDocument = {
             user_id: user_id,
             name: name,
-            amount: parseFloat(amount),
+            amount: amount ? parseFloat(amount): 0,
            threshold: parseFloat(threshold),
            due_date: due_date
         };
@@ -51,7 +51,7 @@ recordRoutes.post("/goal/transfer", async function (req,response){
 });
 
 recordRoutes.route("/goals/:user_id").get(async function(req,res){
-    const user_id= parseInt(req.params.user_id);
+    const user_id= req.params.user_id;
     try{
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Goals");
@@ -67,13 +67,13 @@ recordRoutes.route("/goals/:user_id").get(async function(req,res){
     }
 });
 recordRoutes.route("/active_goals/:user_id").get(async function(req,res){
-    const user_id= parseInt(req.params.user_id);
+    const user_id= req.params.user_id
 
     try{
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Goals");
 
-        const budgetItems = await collection.find({user_id: 0,
+        const budgetItems = await collection.find({user_id: user_id,
                 $expr:{
                $gt: [ "$threshold" , "$amount" ] }  
               }).toArray();
@@ -86,7 +86,7 @@ recordRoutes.route("/active_goals/:user_id").get(async function(req,res){
 });
 recordRoutes.route("/complete_goals/:user_id").get(async function(req,res){
 
-    const user_id= parseInt(req.params.user_id);
+    const user_id= req.params.user_id;
     try{
         let db_connect = dbo.getDB("HighPriv");
         const collection = db_connect.collection("Goals");

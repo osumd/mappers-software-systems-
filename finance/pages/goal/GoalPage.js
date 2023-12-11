@@ -61,13 +61,13 @@ export default function Goals() {
 
   useEffect(() => {
     fetcher();
-  }, [add, view]);
+  }, [user_id, add, view]);
 
   return (
     <>
       
       <div className={styles.container}>
-        <p>{user_id}</p>
+
         <Nav />
         <div className={styles.page}>
           <p className={styles.title}>Financial Goals</p>
@@ -98,9 +98,10 @@ export default function Goals() {
           </ButtonGroup>
           {add && <AddGoal show={add} setShow={setAdd} user_id={user_id} />}
 
-          {complete&& complete.map((item) => <Goal goal={item} />)}
-          {active && active.map((item) => <Goal goal={item} view={view} setView={setView} />)}
-
+         { complete && complete.map((item) => <Goal goal={item} />)}
+             {  active && active.map((item) => <Goal goal={item} view={view} setView={setView} />)}
+          {active[0] && !active[0].threshold && <div className={styles.input}>Set your first financial goal here!!</div>
+              }
           <Footer />
         </div>
       </div>

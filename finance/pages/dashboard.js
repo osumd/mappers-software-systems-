@@ -72,8 +72,10 @@ export default function Home() {
             <div className={styles.child}>
               <Graph />
             </div>
-            <div className={styles.childs}>
+            <div className={styles.comp2}>
+              <div className={styles.childs}>
               <Transactions />
+              </div>
             </div>
           </div>
 
@@ -84,7 +86,7 @@ export default function Home() {
               <BudgetPieChart />
             </div>
 
-            <div className={styles.child}>
+            <div className={styles.comp4}>
               <DashboardGoal />
             </div>
           </div>

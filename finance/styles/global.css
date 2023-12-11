@@ -22,6 +22,10 @@ a {
   text-decoration: none;
 }
 
+#__next {
+  position: absolute;
+  inset: 0;
+}
 * {
   box-sizing: border-box;
 }

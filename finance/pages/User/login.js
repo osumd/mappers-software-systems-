@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {Layout} from "../../components/header";
-import VerifyUser from "./verification";
 import { useRouter } from 'next/router';
+import styles from "../../styles/User.module.css";
+var SignInErrorMessage = "";
 
 export default function Create() {
 
@@ -23,8 +24,7 @@ export default function Create() {
         // Set up timeout functionality.
         e.preventDefault();
         const user = { ...form };
-        const uservalidation = VerifyUser(user);
-        if(uservalidation == false){return;}
+
 
         try{
           const response = await fetch("http://localhost:5000/user/login", {
@@ -36,6 +36,7 @@ export default function Create() {
           })
             .catch(error => {
             window.alert(error);
+            SignInErrorMessage = "Response from server terminated.";
             return;
           });
 
@@ -53,6 +54,7 @@ export default function Create() {
                 console.log(data);
                 router.push('/');
               }
+              SignInErrorMessage = "Account not found.";
               setForm({ username: "", password: ""});
 
             }else
@@ -60,6 +62,7 @@ export default function Create() {
               localStorage.setItem('usertoken', "");
               sessionStorage.setItem('usertoken', "");
               setForm({ username: "", password: ""});
+              SignInErrorMessage = "Account not found.";
             }
             
           }else
@@ -67,53 +70,56 @@ export default function Create() {
             console.error("Error:", response.status);
             localStorage.setItem('usertoken', "");
             sessionStorage.setItem('usertoken', "");
+            SignInErrorMessage = "Network error.";
           }
         } catch (error)
         {
             console.error("Network error:", error.message);
+            SignInErrorMessage = "Network Error.";
         }
         return;
     }
 
-    function redirectToSignUp()
-    {
-      //router.push('/User/signup')
-      console.log("Clicked");
-    }
+
 
     return (
-    
-    <Layout>
-        <div>
-          <h3>Sign In</h3>
+        
+        <div className={`${styles.center} ${styles.pad5} ${styles.full}`}>
+          <div className={styles.sspace}>
+          <p>{SignInErrorMessage}</p>
+          </div>
+          <div className={`${styles.sig}`}>Golden Mappers Industries</div>
           <form onSubmit={onLogin}>
-            <div className="form-group">
-              <label htmlFor="password">Username</label>
+            <div className={`${styles.center} ${styles.pad5} form-group`}>
+              <label htmlFor="password">Username</label><br></br>
               <input
                 type="text"
-                className="form-control"
+                className={`${styles.sbox}  form-control`}
                 id="username"
                 value={form.username}
                 onChange={(e) => updateForm({ username: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
+            <div className={`${styles.center} ${styles.pad5} form-group`}>
+              <label htmlFor="password">Password</label><br></br>
               <input
                 type="text"
-                className="form-control"
+                className={`${styles.sbox} form-control`}
                 id="password"
                 value={form.password}
                 onChange={(e) => updateForm({ password: e.target.value })}
               />
             </div>
-            <div className="form-group">
+            <div className={`${styles.center} ${styles.pad5} form-group`}>
               <input
                 type="submit"
                 value="Log In"
-                className="btn btn-primary"
+                className={`${styles.bbox} btn btn-primary`}
               />
-              <div className="form-group">
+              <div className={`${styles.center} form-group`}>
+            
+            <div className={`${styles.alrdy} ${styles.center}`}>
+            Dont have an account?
             <button
               type="button"
               className="btn btn-secondary"
@@ -125,11 +131,13 @@ export default function Create() {
             </button>
             </div>
             </div>
+            </div>
             
           </form>
           
-
+          <div className={styles.foot}>
+            <footer>Golden Mapper Industries (copyright 2027)</footer>
+          </div>
         </div>
-        </Layout>
         );
 }

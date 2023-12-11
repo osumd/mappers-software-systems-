@@ -5,8 +5,10 @@ import VerifyNewUserCredentials from "./verification";
 import { UserLoggedIn } from '../User/verification';
 import {Layout} from "../../components/header"
 
+import styles from "../../styles/User.module.css";
+
 //This Error_Data is a context module and just serves as an example for global state.
-import {Error_Data} from "../../root/GlobalComponents/ErrorContext"
+// import {Error_Data} from "../../root/GlobalComponents/ErrorContext"
 
 var SignUpErrorMessage = "";
 
@@ -32,7 +34,7 @@ export default function Create() {
     });
     
     //This Error_Data is a context module and just serves as an example for global state.
-    const {error, raiseError} = useContext(Error_Data);
+    // const {error, raiseError} = useContext(Error_Data);
     
     const [form, setForm] = useState({
         username: "",
@@ -95,7 +97,7 @@ export default function Create() {
           console.error("Network error:", error.message);
           return false;
       }
-
+      
     }
 
     async function onSubmit(e) {
@@ -131,39 +133,42 @@ export default function Create() {
   }
 
   return (
-  
-  <Layout>
-      <div>
-        <h3>Sign Up</h3>
-        <h1>{SignUpErrorMessage}</h1>
+      <div className={`${styles.center} ${styles.pad5} ${styles.full}`}>
+        <div className={styles.sspace}>
+          <p>{SignUpErrorMessage}</p>
+          </div>
+          <div className={`${styles.sig}`}>Golden Mappers Industries</div>
         <form onSubmit={onSubmit}>
-          <div className="form-group">
+          <div className={`${styles.center} ${styles.pad5} form-group`}>
             <label htmlFor="password">Username</label>
             <input
               type="text"
-              className="form-control"
+              className={`${styles.sbox}  form-control`}
               id="username"
               value={form.username}
               onChange={(e) => updateForm({ username: e.target.value })}
             />
           </div>
-          <div className="form-group">
+          <div className={`${styles.center} ${styles.pad5} form-group`}>
             <label htmlFor="password">Password</label>
             <input
               type="text"
-              className="form-control"
+              className={`${styles.sbox}  form-control`}
               id="password"
               value={form.password}
               onChange={(e) => updateForm({ password: e.target.value })}
             />
           </div>
-          <div className="form-group">
+          <div className={`${styles.center} ${styles.pad5} form-group`}>
             <input
               type="submit"
               value="Create person"
-              className="btn btn-primary"
+              className={`${styles.bbox} btn btn-primary`}
             />
           </div>
+
+          <div className={`${styles.alrdy} ${styles.center}`}>
+          Already have an account?
           <button
               type="button"
               className="btn btn-secondary"
@@ -173,8 +178,11 @@ export default function Create() {
             >
               Log In
             </button>
+            </div>
         </form>
+        <div className={styles.foot}>
+            <footer>Golden Mapper Industries (copyright 2027)</footer>
+          </div>
       </div>
-      </Layout>
       );
 }

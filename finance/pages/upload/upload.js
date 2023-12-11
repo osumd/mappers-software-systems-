@@ -151,7 +151,7 @@ export default function Home() {
                                     </tr>
                                     <tr>
                                         <td>Posting Date</td>
-                                        <td><input type='text' name='PostingDate' pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\d{4}$" title="Enter a valid description" required /></td>
+                                        <td><input type='text' name='PostingDate' pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\d{4}$" title="Enter a valid date (month/day/year: 01/01/2000)" required /></td>
                                     </tr>
                                     <tr>
                                         <td>Amount</td>

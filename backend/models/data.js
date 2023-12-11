@@ -81,7 +81,7 @@ async function parseCSVStream(csvStream, user_id) {
                 const dateObject = new Date(year, month - 1, day);
                 data.date = dateObject;
     
-                allTransactions.push(data) // <- this works, but doesn't verify the data
+                allTransactions.push(data)
             }
 
 
@@ -91,7 +91,6 @@ async function parseCSVStream(csvStream, user_id) {
 
                 if (transValidation == false) return
 
-                console.log('here')
                 data.user_id = user_id
                 allTransactions.push(data)
             }
@@ -101,8 +100,7 @@ async function parseCSVStream(csvStream, user_id) {
             // All rows have been processed
             let db_connect = dbo.getDB("HighPriv");
             let collection = db_connect.collection("transactions");
-            console.log('CSV stream parsed:', allTransactions);
-        
+
             try {
                 if(allTransactions.length > 0)
                 {
@@ -139,7 +137,7 @@ function validateTransaction(transactionJson)
     keys.forEach(key => {
         //console.log("The Key: " + key);
         const value = transactionJson[key];
-        var valueInMap = acceptedTagMap.get(key);
+        var valueInMap = acceptedTagMap.get(key.toLowerCase());
         //console.log("Value in map: " + "{" + valueInMap.pattern + "," + valueInMap.required + "}");
         
         // console.log("Value: " + value);

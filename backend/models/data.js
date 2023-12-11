@@ -47,42 +47,43 @@ recordRoutes.route('/api/upload').post((req, res) => {
     });
 })
 
+// the fields must pass a regex check before they are given to this function
 async function ParseManualTransaction(fields) {
-    // All rows have been processed
-    let db_connect = dbo.getDB("HighPriv");
-    //https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
-    //db.collection.updateMany(doc, doc, {upsert:true}) to prevent duplications
-    let collection = db_connect.collection("transactions");
-    //console.log('CSV stream parsed:', allTransactions);
+    let db_connect = dbo.getDB("HighPriv")
+    let collection = db_connect.collection("transactions")
+    let new_fields = {}
+    new_fields.description = fields.Description[0]
+    new_fields.date = fields.PostingDate[0]
+    new_fields.amount = fields.Amount[0]
+    new_fields.user_id = fields.user_id[0]
 
     try {
-        await collection.insertOne(fields, {ordered : false });
+        await collection.insertOne(fields, {ordered : false })
     } catch (err) {
-        console.error('Error inserting transaction:', err);
+        console.error('Error inserting transaction:', err)
     }
 }
 
 async function parseCSVStream(csvStream, user_id) {
-    const allTransactions = [];
+    const allTransactions = []
     // Use csv-parser to parse the CSV stream
     fs.createReadStream(csvStream)
         .pipe(csvParser())
         .on('data', (data) => {
+            data.user_id = user_id
+            allTransactions.push(data) // <- this works, but doesn't verify the data
+
+            /*
             if (data) {
-                //Process each row of data as needed
-                //console.log("DATA RECOVERED: " + JSON.stringify(data, null, 2));
-                var transValidation = validateTransaction(data);
-                //console.log("transValidation: " + transValidation);
-                if(transValidation != undefined)
-                {
-                    //console.log("transValidation: " + transValidation.validationStatus);
-                    if(transValidation.validationStatus == true)
-                    {
-                        data.user_id = user_id;
-                        allTransactions.push(data);
-                    }
-                }
+                var transValidation = validateTransaction(data)
+
+                if (transValidation == false) return
+
+                console.log('here')
+                data.user_id = user_id
+                allTransactions.push(data)
             }
+            */
         })
         .on('end', async () => {
             // All rows have been processed
@@ -90,18 +91,14 @@ async function parseCSVStream(csvStream, user_id) {
             //https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
             //db.collection.updateMany(doc, doc, {upsert:true}) to prevent duplications
             let collection = db_connect.collection("transactions");
-            //console.log('CSV stream parsed:', allTransactions);
+            console.log('CSV stream parsed:', allTransactions);
         
             try {
-                
-                //console.log("allTransactions: " + JSON.stringify(allTransactions, null, 2));
                 if(allTransactions.length > 0)
                 {
                     const result = await collection.insertMany(allTransactions, {ordered : false });
-                    //console.log(`${result.insertedCount} documents inserted`);
+                    console.log(`${result.insertedCount} documents inserted`);
                 }
-                
-                
             } catch (err) {
                 //console.error('Error inserting documents:', err);
             }
@@ -135,32 +132,29 @@ function validateTransaction(transactionJson)
         var valueInMap = acceptedTagMap.get(key);
         //console.log("Value in map: " + "{" + valueInMap.pattern + "," + valueInMap.required + "}");
         
-        //console.log("Value: " + value);
-        if(valueInMap == undefined)
+        // console.log("Value: " + value);
+        if (valueInMap == undefined)
         {
-            if(valueInMap.required == true)
-            {
-                validTransaction = false;
-                return {validationStatus: validTransaction};
-            }
-        }else
-        {   
+            validTransaction = false;
+            return validTransaction;
+        } else
+        {
             var requirementMet = valueInMap.pattern.test(value);
-            //console.log("requirementMet: " + requirementMet);
-            if(requirementMet == true && valueInMap.required == true)
+            // console.log("requirementMet: " + requirementMet);
+            if (requirementMet == true && valueInMap.required == true)
             {
                 validTransaction = true;
             }
-            if(requirementMet == false && valueInMap.required == true)
+            if (requirementMet == false && valueInMap.required == true)
             {
                 validTransaction = false;
-                return {validationStatus: validTransaction};
+                return validTransaction;
             }
  
         }
     });
 
-    return {validationStatus: validTransaction};
+    return validTransaction;
 }
 
 module.exports = recordRoutes;

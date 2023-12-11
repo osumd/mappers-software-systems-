@@ -42,7 +42,7 @@ export default function Home() {
             body: formData
         };
 
-        if (formData.get('title') != '' && formData.get('files').name != '') {
+        if (formData.get('files').name != '') {
 
             try {
                 const response = await fetch(url, fetchOptions)
@@ -134,7 +134,6 @@ export default function Home() {
                         <h3>Upload Financial Documentation</h3>
 
                         <form className={styles.uploadbox} onSubmit={handleFileSubmit} encType='multipart/form-data'>
-                            File name: <input type='text' name='title' />
                             <input type='file' name='files'></input>
                             <button>Upload Financial CSV</button>
                         </form>

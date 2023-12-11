@@ -279,66 +279,87 @@ recordRoutes.post("/transaction/insert", async function (req, response) {
 
 
 recordRoutes.post("/transaction/search", async function(req,response) {
-  let db_connect = dbo.getDB(dbName);
 
-  //categories : array of potential categories
-  //amount     : [from-to] or singular
-  //date       : [from-to] or singular
+  const query = req.body;
 
+  // const matchCriteria = {
+  //   $match: {
+  //     $and: [
+  //       //query.categories ? { category: { $in: query.categories } } : {},
+  //       query.amount ? { amount: { $gte: 0.0  , $lte: 100.0 } } : {},
+  //       //query.date ? { Date: { $gte: query.date_from, $lte: query.date_to } } : {},
+  //       //query.keywords.trim() !== '' ? { description: { $regex: query.keywords, $options: 'i' } } : {},
+  //     ]
+  //   }
+  // };
+
+  const dateFromString = (dateString) => {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day, 0, 0, 0);
+  };
+  const dateFrom = dateFromString(query.date_from);
+  const dateTo = dateFromString(query.date_to);
+  console.log("from: " + dateFrom + " to: " + dateTo);
+  console.log("from:" , new Date(query.date_from)," to:", new Date(query.date_to));
+  console.log("keywords: " + query.keywords );
   const matchCriteria = {
     $match: {
       $and: [
-        categories ? { category: { $in: categories } } : {},
-        amount ? { amount: { $gte: amount[0], $lte: amount[1] } } : {},
-        date ? { date: { $gte: date[0], $lte: date[1] } } : {}
+              { category: { $in: query.categories } },
+              { amount: { $gte: 0.0  , $lte: 100.0 } },
+              query.date_from != '' ? { date: { $gte: new Date(query.date_from), $lte: new Date(query.date_to) } } : {},
+              query.keywords.trim() !== '' ? { description: { $regex: query.keywords} } : {},
       ]
     }
   };
 
-  let myquery = { 
-    Category: req.params.category
-  };
 
-  const aggregationPipeline = [
-    matchCriteria,
-    {
+  const group_stage = {
       $group: {
-        _id: {
-          category: '$category',
-          amount: {
-            $switch: {
-              branches: [
-                { case: { $and: [{ $gte: ['$amount', 0] }, { $lte: ['$amount', 50] }] }, then: 'Range_1' },
-                { case: { $and: [{ $gt: ['$amount', 50] }, { $lte: ['$amount', 100] }] }, then: 'Range_2' },
-                // Add more branches based on your amount ranges
-              ],
-              default: 'Range_Unknown'
-            }
-          },
-          date: '$date',
-        },
-        transaction_count: { $sum: 1 },
-        total_amount: { $sum: '$amount' }
+          _id: "$user_id",
+          count: { $sum: 1 }
       }
-    },
-    {
-      $project: {
-        _id: 0,
-        category: '$_id.category',
-        amount_range: '$_id.amount',
-        date: '$_id.date',
-        transaction_count: 1,
-        total_amount: 1
-      }
-    }
-  ];
+  }
 
-  let results = await db_connect
-  .collection(collection)
-  .aggregate([
-    { $match: myquery }
-  ]).toArray();
-  res.json(results);
+  var pipeline = [ matchCriteria, group_stage ]
+
+
+  let db_connect = dbo.getDB("HighPriv");
+
+  //categories : array of potential categories
+  //amount     : [from-to] or singular
+  //date       : [from-to] or singular
+  var DebugMode = true;
+
+  function msg(message)
+  {
+      if(DebugMode)
+      {
+          console.log(message);
+      }
+  }
+
+  msg("\n\n\n Transaction aggregation started");
+
+  msg("Search body: " + query.amount_from + ":" + query.amount_to);
+  
+
+  try {
+    // Perform the MongoDB aggregation
+
+    let collection = db_connect.collection("transactions");
+    if(collection == undefined)
+    {
+      msg("Collection was undefined");
+      response.json({successful: false, transactions: 0});
+    }
+
+    const results = await collection.aggregate([matchCriteria]).toArray();
+    response.json({successful: true, transactions: results});
+    } catch (error) {
+      msg('Error:', error);
+      response.json({successful: false, transactions: 0});
+    }
 });
  
 module.exports = recordRoutes;

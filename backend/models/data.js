@@ -70,8 +70,20 @@ async function parseCSVStream(csvStream, user_id) {
     fs.createReadStream(csvStream)
         .pipe(csvParser())
         .on('data', (data) => {
-            data.user_id = user_id
-            allTransactions.push(data) // <- this works, but doesn't verify the data
+
+            var validTransaction = validateTransaction(data);
+
+            if(validTransaction == true)
+            {
+                data.user_id = user_id
+                data.amount = parseFloat(data.amount);
+                const [month, day, year] = data.date.split('/').map(Number);
+                const dateObject = new Date(year, month - 1, day);
+                data.date = dateObject;
+    
+                allTransactions.push(data) // <- this works, but doesn't verify the data
+            }
+
 
             /*
             if (data) {
@@ -88,8 +100,6 @@ async function parseCSVStream(csvStream, user_id) {
         .on('end', async () => {
             // All rows have been processed
             let db_connect = dbo.getDB("HighPriv");
-            //https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
-            //db.collection.updateMany(doc, doc, {upsert:true}) to prevent duplications
             let collection = db_connect.collection("transactions");
             console.log('CSV stream parsed:', allTransactions);
         

@@ -8,9 +8,7 @@ function App({Component, pageProps}) {
 
   return (
     <>
-    <ErrorWindow>
         <Component {...pageProps} />
-    </ErrorWindow>
     </>
   );
 }

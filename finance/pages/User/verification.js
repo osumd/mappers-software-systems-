@@ -33,9 +33,7 @@ async function PostFetch({ipaddress, body})
 
 export default async function VerifyNewUserCredentials(UserCredentials)
 {
-    const usernameJson = {
-        username: UserCredentials.username
-    }
+    
    
 
     const UsernameVerification = /^([A-z\d!-/:-@]){1,}/;
@@ -48,11 +46,15 @@ export default async function VerifyNewUserCredentials(UserCredentials)
         return {passed: false, message: "Error credentials not valid. Please enter a valid password atleast 8 characters, include atleast one uppercase, one number and one symbol."};
     }
 
+
+    const usernameJson = {
+        username: UserCredentials.username
+    }
     const usernameExists = await PostFetch({ipaddress:"http://localhost:5000/user/exist", body: usernameJson});
 
     if(usernameExists == true)
     {
-        return {passed: false, message: "Error credentials not valid. Please enter a valid password atleast 8 characters, include atleast one uppercase, one number and one symbol."};
+        return {passed: false, message: "User already exists."};
     }
 
     return {passed: (PasswordTest & UsernameTest), message: "Error credentials not valid. Please enter a valid password atleast 8 characters, include atleast one uppercase, one number and one symbol."};

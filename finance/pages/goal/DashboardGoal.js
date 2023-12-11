@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import Goal from './Goal';
 
+import styles from '../../styles/Home.module.css'
+
 import { UserId } from '../User/verification';
 export default function DashboardGoal(){
   const [user_id, setUserId] = useState(0);
@@ -37,8 +39,21 @@ const handleViewAll= () => {
 };
   return(
   <>
+    <div className={styles.nav}>
+                <a href="/goal/DashboardGoal">Goals</a>
+                <a href="/upload/upload">Upload</a>
+
+                <div className={styles.navcenter}>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div className={styles.navright}>
+                    <a href="/User/logout">Logout</a>
+                    <a href="">Search</a>
+                </div>
+            </div>
    {list[0] ? <Goal goal={list[0]}/>: <p>Click view more to add more goals</p>}
   <button onClick={handleViewAll}>View more</button>
+
 
   </>
   )

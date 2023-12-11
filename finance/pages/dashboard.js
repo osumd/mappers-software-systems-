@@ -11,15 +11,15 @@ export function Nav() {
   return (
     <>
       <div className={styles.nav}>
-        <a href="">Account</a>
+        <a href="/goal/DashboardGoal">Goals</a>
         <a href="/upload/upload">Upload</a>
 
         <div className={styles.navcenter}>
           <a href="/dashboard">Dashboard</a>
         </div>
         <div className={styles.navright}>
+          <a href="/User/logout">Logout</a>
           <a href="">Search</a>
-          <a href="">Component</a>
         </div>
       </div>
     </>

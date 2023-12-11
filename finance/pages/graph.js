@@ -146,7 +146,7 @@ export default function Graph({
     }
    
   }
-
+  
   return(
   <>
 <select onChange={byCategory}> {categorySelector.map(category=>

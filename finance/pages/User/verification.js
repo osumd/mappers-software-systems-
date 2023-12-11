@@ -38,10 +38,10 @@ export default async function VerifyNewUserCredentials(UserCredentials)
     }
    
 
-    const UsernameVerification = /^([A-z\d!-/:-@]){6,}/;
+    const UsernameVerification = /^([A-z\d!-/:-@]){1,}/;
     const PasswordVerification = /^(?=.*[A-Z])(?=.*[!-/:-@])(?=.*\d)([A-z\d!-/:-@]){8,}/;
     const PasswordTest = PasswordVerification.test(UserCredentials.password);
-    const UsernameTest = UsernameVerification.test(UserCredentials.username);
+    const UsernameTest = true;
 
     if(PasswordTest == false || UsernameTest == false)
     {

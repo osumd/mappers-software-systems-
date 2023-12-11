@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Button from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
-//import { UserId } from "../User/verification";
+import { UserId } from "../User/verification";
 import AddGoal from "./AddGoal";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Goal from "./Goal";
@@ -13,13 +13,30 @@ import { Footer, Nav } from "../dashboard";
 
 export default function Goals() {
   //const user_id = UserId().user_id;
-  const user_id = 0;
+
   const [add, setAdd] = useState(false);
+  const [user_id, setUserId] = useState(0);
   const handleAdd = () => setAdd(true);
   const [view, setView] = useState(true);
   const [complete, setComplete] = useState([]);
   const [active, setActive] = useState([]);
+
+  useEffect(() => {
+
+    function checkLoginStatus() {
+        var userLoggedIn = UserId();
+        setUserId(userLoggedIn.user_id);
+        if(userLoggedIn.LoginStatus == false)
+        {
+            router.push('/');
+        }
+    }
+  
+    checkLoginStatus(); // Call the function to check login status when the component mounts
+  })
+
   const fetcher = () => {
+    
     fetch(
       `http://localhost:5000/${view ? "active" : "complete"}_goals/${user_id}`
     )
@@ -48,7 +65,9 @@ export default function Goals() {
 
   return (
     <>
+      
       <div className={styles.container}>
+        <p>{user_id}</p>
         <Nav />
         <div className={styles.page}>
           <p className={styles.title}>Financial Goals</p>

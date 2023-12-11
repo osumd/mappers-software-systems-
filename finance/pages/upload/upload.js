@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 
 import styles from '../../styles/Home.module.css'
-import {Router} from 'next';
 import { UserLoggedIn } from '../User/verification';
 import { useRouter } from 'next/router';
 
@@ -23,7 +22,6 @@ export default function Home() {
             console.log(message);
         }
     }
-    var server_url = "";
 
     async function handleFileSubmit(event) {
         // prevents the form from accessing '/api' unless fetch fails

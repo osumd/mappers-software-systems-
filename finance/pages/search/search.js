@@ -6,6 +6,39 @@ import { useRouter } from 'next/router';
 
 var SearchError = "";
 
+export function TransactionsTable({ transactions }) {
+
+  if(transactions == 0)
+  {
+    return;
+  }
+  return (
+    <div>
+      <h1>Transaction Table</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction, index) => (
+            <tr key={index}>
+              <td>{transaction.date}</td>
+              <td>{transaction.description}</td>
+              <td>{transaction.amount}</td>
+              <td>{transaction.category}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function SearchPath() {
 
     const router = useRouter();
@@ -18,6 +51,10 @@ export default function SearchPath() {
         date_from: "",
         date_to: "",
 
+    });
+
+    const [currentTransactions, setTransactions] = useState({
+      transactions:0,
     });
         // const navigate = useNavigate();
         // These methods will update the state properties.
@@ -92,10 +129,8 @@ export default function SearchPath() {
 
     function displayTransactions(transactions)
     {
-      for(var i = 0; i < transactions.length; i++)
-      {
-        console.log(transactions[i].category);
-      }
+      setTransactions({transactions: transactions});
+      console.log(transactions.length);
     }
 
 
@@ -145,6 +180,7 @@ export default function SearchPath() {
     async function onSubmit(e) {
 
         // Set up timeout functionality.
+        SearchError = "";
         e.preventDefault();
         var formData = { ...form };
 
@@ -354,11 +390,8 @@ export default function SearchPath() {
 
           </form>
         </div>
+        <TransactionsTable transactions={currentTransactions.transactions} />
         </Layout>
         );
 }
 
-export function transactionsTable(transactions)
-{
-
-}

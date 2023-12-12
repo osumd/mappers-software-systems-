@@ -19,7 +19,7 @@ export function Nav() {
         </div>
         <div className={styles.navright}>
           <a href="/User/logout">Logout</a>
-          <a href="">Search</a>
+          <a href="/search/search">Search</a>
         </div>
       </div>
     </>

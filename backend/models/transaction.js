@@ -304,7 +304,7 @@ recordRoutes.post("/transaction/search", async function(req,response) {
   const matchCriteria = {
     $match: {
       $and: [
-              { category: { $in: query.categories } },
+              query.categories.length > 0 ? { category: { $in: query.categories } } : {},
               { amount: { $gte: parseFloat(query.amount_from)  , $lte: parseFloat(query.amount_to) } },
               query.date_from != '' ? { date: { $gte: new Date(query.date_from), $lte: new Date(query.date_to) } } : {},
               query.keywords.trim() !== '' ? { description: { $regex: query.keywords} } : {},

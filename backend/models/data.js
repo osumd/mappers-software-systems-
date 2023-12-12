@@ -54,14 +54,15 @@ async function ParseManualTransaction(fields) {
 
     let new_fields = {}
     new_fields.description = fields.Description[0]
-    const [month, day, year] = fields.PostingDate.split('/').map(Number);
+    const [month, day, year] = fields.PostingDate[0].split('/').map(Number);
     const dateObject = new Date(year, month - 1, day);
     new_fields.date = dateObject;
     new_fields.amount = parseFloat(fields.Amount[0]);
     new_fields.user_id = fields.user_id[0]
+    new_fields.category = fields.Category[0]
 
     try {
-        await collection.insertOne(fields, {ordered : false })
+        await collection.insertOne(new_fields);
     } catch (err) {
         console.error('Error inserting transaction:', err)
     }

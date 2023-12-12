@@ -113,20 +113,6 @@ export default function SearchPath() {
 
     function checkCategories(formData)
     {
-      if(formData.categories.length == 0)
-      {
-        formData.categories = [
-          'Department Stores',
-          'Restaurants',
-          'Payments and Credits',
-          'Merchandise',
-          'Supermarkets',
-          'Travel/ Entertainment',
-          'Entertainment',
-          'Services'
-        ];
-      }
-
       return {validated: true, formData: formData, message: "none"};
     }
 
